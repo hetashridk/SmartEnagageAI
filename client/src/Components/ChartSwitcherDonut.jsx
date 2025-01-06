@@ -7,17 +7,17 @@ const ChartSwitcherDonut = ({ postsData, impressionsData, likesData, sharesData,
   const renderChart = () => {
     switch (selectedChart) {
       case 'posts':
-        return <Doughnut data={postsData} options={options} />;
+        return <Doughnut data={postsData} options={options} style={{ width: '506px', height: '605px'}}/>;
       case 'impressions':
-        return <Doughnut data={impressionsData} options={options} />;
+        return <Doughnut data={impressionsData} options={options} style={{ width: '506px', height: '605px'}}/>;
       case 'likes':
-        return <Doughnut data={likesData} options={options} />;
+        return <Doughnut data={likesData} options={options} style={{ width: '506px', height: '605px'}}/>;
       case 'shares':
-        return <Doughnut data={sharesData} options={options} />;
+        return <Doughnut data={sharesData} options={options} style={{ width: '506px', height: '605px'}}/>;
       case 'comments':
-        return <Doughnut data={commentsData} options={options} />;
+        return <Doughnut data={commentsData} options={options} style={{ width: '506px', height: '605px'}}/>;
       default:
-        return <Doughnut data={postsData} options={options} />;
+        return <Doughnut data={postsData} options={options} style={{ width: '506px', height: '605px'}}/>;
     }
   };
 

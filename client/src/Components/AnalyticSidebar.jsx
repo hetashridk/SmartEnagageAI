@@ -1,86 +1,88 @@
-import React from 'react'
-import Logo from '../../src/assets/logo.png'
-import analyticDashboard from '../../src/assets/analyticDashboard.png'
-import arrow from '../../src/assets/BackArrow.png'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useState } from 'react';
+import Logo from '../../src/assets/logo.png';
+import analyticDashboard from '../../src/assets/analyticDashboard.png';
+import arrow from '../../src/assets/BackArrow.png';
+import { Link, NavLink } from 'react-router-dom';
+import { FaChartPie, FaMapMarkerAlt, FaCalendarAlt, FaThLarge } from 'react-icons/fa';
 
-function AnalyticSidebar() {
-    return (
-        <>
-            {/* left side */}
-            <div className='bg-[#7144F1] p-8 w-[25%]'>
+function AnalyticSidebar({ isMinimized, toggleMinimize }) {
+//   const [isMinimized, setIsMinimized] = useState(false);
 
-                {/* logo */}
-                <div className='flex'>
-                    <div className='w-[31px] h-[31px] ml-5'>
-                        <img src={Logo} alt="logo" />
-                    </div>
-                    <Link to='/'>
-                    <div className='w-[31px] h-[31px] ml-52 flex'>
-                        <img src={arrow} alt="back" className='rotate-180'/>
-                        {/* <p className='syne text-white text-[10px]'>Post Analytic Form</p> */}
-                    </div>
-                    </Link>
-                </div>
+//   const handleToggle = () => {
+//     setIsMinimized(!isMinimized);
+//   };
 
-                {/* text */}
-                <div className='mt-10 ml-5'>
-                    <p className='text-white syne text-[40px]'>Analytic Dashboard</p>
-                    {/* <div className='absolute top-20 left-[-50px] w-[200px] h-[150px] bg-[#009950] rounded-full blur-lg opacity-50 z-0  transform rotate-45'></div> */}
-                </div>
+  return (
+    <div className={`bg-[#7144F1] p-8 ${isMinimized ? 'w-24' : 'w-[25%]'}`}>
+      <div className={`${isMinimized ? 'w-[20px] h-[20px] ml-2' : 'flex justify-between items-center'}`}>
+        <Link to='/'>
+        <div className={`${isMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px]'}`}>
+          <img src={Logo} alt="logo" />
+        </div>
+        </Link>
+        {/* <button className='text-white'>
+          <img src={arrow} alt="toggle" className={`transform ${isMinimized ? 'w-64 mt-4' : 'rotate-180 w-[30px]'}`} />
+        </button> */}
+      </div>
 
-                <div className='mt-9 ml-5'>
-                    <ul className='outfit text-[#3d3d3d] font-medium text-[18px] flex flex-col justify-center space-y-4'>
-                        <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
-                            <NavLink
-                                to='/analytic/age'
-                                className={({ isActive }) =>
-                                    isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
-                                }
-                            >
-                                Age
-                            </NavLink>
-                        </li>
-                        <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
-                            <NavLink
-                                to='/analytic/location'
-                                className={({ isActive }) =>
-                                    isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
-                                }
-                            >
-                                Location
-                            </NavLink>
-                        </li>
-                        <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
-                            <NavLink
-                                to='/analytic/day'
-                                className={({ isActive }) =>
-                                    isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
-                                }
-                            >
-                                Day/Time
-                            </NavLink>
-                        </li>
-                        <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
-                            <NavLink
-                                to='/analytic/type'
-                                className={({ isActive }) =>
-                                    isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
-                                }
-                            >
-                                Type
-                            </NavLink>
-                        </li>
-                    </ul>
-                </div>
+      {!isMinimized && (
+        <div className='mt-10'>
+          <p className='text-white syne text-[40px]'>Analytic Dashboard</p>
+        </div>
+      )}
 
-                {/* image */}
-                <div className='absolute bottom-10 left-5 w-[200px]'>
-                    <img src={analyticDashboard} alt="calender" />
-                </div>
-            </div>
-        </>
-    )
+      <div className={`${isMinimized ? 'mt-16' : 'mt-9'}`}>
+        <ul className='outfit text-[#3d3d3d] font-medium text-[18px] flex flex-col justify-center space-y-4'>
+          <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
+            <NavLink
+              to='/analytic/age'
+              className={({ isActive }) =>
+                isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
+              }
+            >
+              {isMinimized ? <FaChartPie size={17} /> : 'Age'}
+            </NavLink>
+          </li>
+          <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
+            <NavLink
+              to='/analytic/location'
+              className={({ isActive }) =>
+                isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
+              }
+            >
+              {isMinimized ? <FaMapMarkerAlt size={17} /> : 'Location'}
+            </NavLink>
+          </li>
+          <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
+            <NavLink
+              to='/analytic/day'
+              className={({ isActive }) =>
+                isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
+              }
+            >
+              {isMinimized ? <FaCalendarAlt size={17} /> : 'Day & Time'}
+            </NavLink>
+          </li>
+          <li className='flex items-center bg-[#9774f9] p-2 rounded-2xl'>
+            <NavLink
+              to='/analytic/type'
+              className={({ isActive }) =>
+                isActive ? 'text-[#f6f2f2]' : 'text-[#3d3d3d]'
+              }
+            >
+              {isMinimized ? <FaThLarge size={17} /> : 'Type'}
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+
+      {!isMinimized && (
+        <div className='absolute bottom-10 left-5 w-[200px]'>
+          <img src={analyticDashboard} alt="calender" />
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default AnalyticSidebar
+export default AnalyticSidebar;

@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import sampleData from '../utils/SampleData.json';
 import ChartSwitcher from '../Components/ChartSwitcherHistogram';
+import Chatbot from '../Components/Chatbot';
 
 // Register the necessary components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyticPageAge() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
+
   const labels = sampleData.age.posts.map(item => item.range);
 
   const postsData = {
@@ -186,17 +198,25 @@ function AnalyticPageAge() {
       x: {
         stacked: true,
         barThickness: 50, // Adjust this value to control the thickness of the bars
+        title: {
+          display: true,
+          text: 'Age Range',
+        },
       },
       y: {
         stacked: true,
+        title: {
+          display: true,
+          text: 'Count',
+        },
       },
     },
   };
 
   return (
     <div className='h-screen flex'>
-      <AnalyticSidebar />
-      <div className='flex-1 p-6'>
+      <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
+      <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Age Analytics</h2>
         <ChartSwitcher
           postsData={postsData}
@@ -207,6 +227,7 @@ function AnalyticPageAge() {
           options={options}
         />
       </div>
+      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }
