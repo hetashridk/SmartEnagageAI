@@ -1,20 +1,31 @@
-import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import React, { useState } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, scales } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import ChartSwitcherBar from '../Components/ChartSwitcherBar';
 import sampleData from '../utils/SampleData.json';
+import Chatbot from '../Components/Chatbot';
 
 // Register the necessary components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyticPageType() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
+
   const labels = ['Carousal', 'Image', 'Video', 'Reel/Shorts'];
 
   const postsData = {
     labels,
     datasets: [
       {
-        label: 'Posts',
         data: [
           sampleData.type.posts.carousal,
           sampleData.type.posts.image,
@@ -42,7 +53,6 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
-        label: 'Impressions',
         data: [
           sampleData.type.impressions.carousal,
           sampleData.type.impressions.image,
@@ -70,7 +80,6 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
-        label: 'Likes',
         data: [
           sampleData.type.likes.carousal,
           sampleData.type.likes.image,
@@ -98,7 +107,6 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
-        label: 'Shares',
         data: [
           sampleData.type.shares.carousal,
           sampleData.type.shares.image,
@@ -126,7 +134,6 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
-        label: 'Comments',
         data: [
           sampleData.type.comments.carousal,
           sampleData.type.comments.image,
@@ -161,12 +168,26 @@ function AnalyticPageType() {
         text: 'Analytics by Type',
       },
     },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Type of Post',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Count',
+        },
+      },
+    },
   };
 
   return (
     <div className='h-screen flex'>
-      <AnalyticSidebar />
-      <div className='flex-1 p-6'>
+      <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
+      <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Type Analytics</h2>
         <ChartSwitcherBar
           postsData={postsData}
@@ -177,6 +198,7 @@ function AnalyticPageType() {
           options={options}
         />
       </div>
+      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }

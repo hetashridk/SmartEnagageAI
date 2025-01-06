@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import sampleData from '../utils/SampleData.json';
 import ChartSwitcherGroupedBar from '../Components/ChartSwitcherGroupedBar';
+import Chatbot from '../Components/Chatbot';
 
 // Register the necessary components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyticPageDay() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  
+    const toggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen);
+    };
+  
+    const toggleMinimize = () => {
+      setIsSidebarMinimized(!isSidebarMinimized);
+    };
+  
   const labelsPosts = Object.keys(sampleData.day_and_time.posts);
   const labelsImpressions = Object.keys(sampleData.day_and_time.impressions);
   const labelsLikes = Object.keys(sampleData.day_and_time.likes);
@@ -368,17 +380,25 @@ function AnalyticPageDay() {
       x: {
         stacked: true,
         barThickness: 50, // Adjust this value to control the thickness of the bars
+        title: {
+          display: true,
+          text: 'Type of Post',
+        },
       },
       y: {
         stacked: true,
+        title: {
+          display: true,
+          text: 'Count',
+        },
       },
     },
   };
 
   return (
     <div className='flex'>
-      <AnalyticSidebar />
-      <div className='flex-1 p-6'>
+      <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
+      <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Day/Time Analytics</h2>
         <div className='mb-6'>
           <h3 className='text-xl font-bold text-gray-800 mb-4'>Weekday</h3>
@@ -403,6 +423,7 @@ function AnalyticPageDay() {
           />
         </div>
       </div>
+      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }

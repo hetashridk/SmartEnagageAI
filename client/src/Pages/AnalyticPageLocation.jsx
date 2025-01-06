@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import sampleData from '../utils/SampleData.json';
 import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
+import Chatbot from '../Components/Chatbot';
 
 // Register the necessary components with Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function AnalyticPageLocation() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
+
   const labels = Object.keys(sampleData.location.posts.carousal);
 
   const postsData = {
@@ -195,11 +207,10 @@ function AnalyticPageLocation() {
 
   return (
     <div className='flex'>
-      <AnalyticSidebar />
-      <div className='flex-1 p-6'>
+      <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
+      <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
-        {/* <div className='w-[100%] h-[100%]'> */}
-        <ChartSwitcherDonut
+      <ChartSwitcherDonut
           postsData={postsData}
           impressionsData={impressionsData}
           likesData={likesData}
@@ -207,8 +218,8 @@ function AnalyticPageLocation() {
           commentsData={commentsData}
           options={options}
         />
-        {/* </div> */}
       </div>
+      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }
