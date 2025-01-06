@@ -190,6 +190,7 @@ function AnalyticPageLocation() {
         enabled: true,
       },
     },
+    maintainAspectRatio: false,
   };
 
   return (
@@ -197,6 +198,7 @@ function AnalyticPageLocation() {
       <AnalyticSidebar />
       <div className='flex-1 p-6'>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
+        {/* <div className='w-[100%] h-[100%]'> */}
         <ChartSwitcherDonut
           postsData={postsData}
           impressionsData={impressionsData}
@@ -205,6 +207,7 @@ function AnalyticPageLocation() {
           commentsData={commentsData}
           options={options}
         />
+        {/* </div> */}
       </div>
     </div>
   );
