@@ -137,7 +137,7 @@ function InputPage() {
         {message && (
           <div className="w-96 mt-4 p-6 bg-green-100 text-green-700 rounded-lg shadow-lg">
             <h3 className="font-bold text-xl mb-2">Response:</h3>
-            <div className="text-sm">
+            <div className="prose max-w-none text-sm">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
             </div>
           </div>
