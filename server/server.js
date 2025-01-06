@@ -36,7 +36,7 @@ function InputPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    const inputValue = `Plan to post ${contentType} on ${dayType} during ${timeSlot}. in short and crisp manner`;
+    const inputValue = `Plan to post ${contentType} on ${dayType} during ${timeSlot}`;
 
     const payload = {
       input_value: inputValue,
@@ -132,24 +132,13 @@ function InputPage() {
             )}
           </button>
         </form>
-
-        {/* Message with enhanced styling */}
+        {/* Render the message as markdown */}
         {message && (
-          <div className="w-96 mt-4 p-6 bg-green-100 text-green-700 rounded-lg shadow-lg">
-            <h3 className="font-bold text-xl mb-2">Response:</h3>
-            <div className="prose max-w-none text-sm">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
-            </div>
+          <div className="w-96 mt-4 p-4 bg-green-100 text-green-700 text-center">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
           </div>
         )}
-
-        {/* Error message with enhanced styling */}
-        {errorMessage && (
-          <div className="w-96 mt-4 p-6 bg-red-100 text-red-700 rounded-lg shadow-lg">
-            <h3 className="font-bold text-xl mb-2">Error:</h3>
-            <div className="text-sm">{errorMessage}</div>
-          </div>
-        )}
+        {errorMessage && <div className="w-96 mt-4 p-4 bg-red-100 text-red-700 text-center">{errorMessage}</div>}
       </div>
     </div>
   );
