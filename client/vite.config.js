@@ -11,7 +11,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: '../dist', // Ensures the client build output is placed outside of `client` to avoid conflicts
+    outDir: 'dist', // Ensures the client build output is placed outside of `client` to avoid conflicts
     emptyOutDir: true,  // Cleans output directory before each build
   },
   server: {
