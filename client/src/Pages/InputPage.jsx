@@ -52,7 +52,7 @@ function InputPage() {
     setLoading(true); // Set loading to true when form is submitted
 
     try {
-      const response = await fetch('http://localhost:5000/api/run', {  // Replace with your proxy server URL
+      const response = await fetch('/api/run', {  // Replace with your proxy server URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

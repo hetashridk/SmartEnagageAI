@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // Points API calls to your Express server during development
+        target: 'http://localhost:5000', // Points API calls to your Express server during development
         changeOrigin: true,
         secure: false
       }
