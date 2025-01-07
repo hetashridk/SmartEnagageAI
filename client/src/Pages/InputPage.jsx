@@ -91,7 +91,7 @@ function InputPage() {
     setLoadingg(true);
 
     try {
-      const response = await fetch('http://localhost:5173/api/run', {
+      const response = await fetch('/api/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ function InputPage() {
         <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[160px] w-[430px]' } ${message ? 'hidden' : 'block'} ${errorMessage ? 'hidden' : 'block'}`}>
+        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block' } ${message ? 'hidden' : 'block'} ${errorMessage ? 'hidden' : 'block'}`}>
           <img src={CalenderImg} alt="calender" />
         </div>
       </div>

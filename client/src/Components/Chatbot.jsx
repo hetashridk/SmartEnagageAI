@@ -31,7 +31,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
     setUserInput('');
 
     try {
-      const response = await fetch('http://localhost:5173/api/run', {
+      const response = await fetch('/api/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
             </div>
           ))}
 
-          <form onSubmit={handleSubmit} className={`flex ${chatHistory.length ? 'mt-4' : 'mt-[632px]'}`}>
+          <form onSubmit={handleSubmit} className='flex mt-[632px] fixed'>
             <input
               type="text"
               value={userInput}
