@@ -3,8 +3,8 @@ import Logo from '../../src/assets/logo.png';
 import CalenderImg from '../../src/assets/CalenderImage.png';
 import arrow from '../../src/assets/BackArrow.png';
 import { Link } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; // Import react-markdown
-import remarkGfm from 'remark-gfm'; // Import GitHub-flavored markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import Chatbot from '../Components/Chatbot';
 
 function InputPage() {
@@ -14,7 +14,7 @@ function InputPage() {
   const [location, setLocation] = useState({ country: '', city: '' });
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
 
   const toggleMinimize = () => {
@@ -40,9 +40,41 @@ function InputPage() {
       });
   }, []);
 
+  const parseMessage = (message) => {
+    // console.log('Parsing message:', message); // Log the message being parsed
+    const sections = message.split('\n\n');
+    const parsedSections = {
+      insights: [],
+      comparativeInsights: [],
+      suggestions: [],
+    };
+
+    let currentSection = '';
+
+    sections.forEach((section) => {
+      if (section.startsWith('### **Insights**:')) {
+        currentSection = 'insights';
+        parsedSections[currentSection].push(section.replace('### **Insights**:', '').trim());
+      } else if (section.startsWith('### **Comparative Insights**:')) {
+        currentSection = 'comparativeInsights';
+        parsedSections[currentSection].push(section.replace('### **Comparative Insights**:', '').trim());
+      } else if (section.startsWith('### **Suggestions**:')) {
+        currentSection = 'suggestions';
+        parsedSections[currentSection].push(section.replace('### **Suggestions**:', '').trim());
+      } else if (currentSection) {
+        parsedSections[currentSection].push(section.trim());
+      }
+    });
+
+    // console.log('Parsed Message:', parsedSections); // Properly log the parsed sections
+    return parsedSections;
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    const inputValue = `Plan to post ${contentType} on ${dayType} during ${timeSlot}. in short and crisp manner`;
+    e.preventDefault();
+    console.log('Form submitted'); // Log form submission
+    const inputValue = `(5a00983d6eed - Ignore this)
+    Give me detailed analysis based on insights, comparative insights, and suggestions, for post of type ${contentType} that I plan on posting on ${dayType} during the ${timeSlot}`;
 
     const payload = {
       input_value: inputValue,
@@ -55,10 +87,10 @@ function InputPage() {
       }
     };
 
-    setLoading(true); // Set loading to true when form is submitted
+    setLoading(true);
 
     try {
-      const response = await fetch('/api/run', {  // Replace with your proxy server URL
+      const response = await fetch('/api/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,22 +101,27 @@ function InputPage() {
       const data = await response.json();
 
       if (response.ok) {
+        // console.log('API Response:', data); // Log the API response
         setMessage(data.outputs[0].outputs[0].artifacts.message);
+        console.log('Message set:', data.outputs[0].outputs[0].artifacts.message); // Log the message being set
         setErrorMessage('');
       } else {
         setErrorMessage('Failed to submit data.');
       }
-      setLoading(false); // Reset loading after receiving response
+      setLoading(false);
 
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An error occurred. Please try again later.');
-      setLoading(false); // Reset loading on error
+      setLoading(false);
     }
   };
 
+  const parsedMessage = parseMessage(message);
+  // console.log('Parsed Message:', parsedMessage); // Log the parsed message
+
   return (
-    <div className='flex h-screen'>
+    <div className='flex'>
       <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[35%]'}`}>
         <div className={`${isSidebarMinimized ? 'flex flex-col space-y-5 justify-center items-center' : 'flex justify-between items-center'}`}>
           <Link to='/'>
@@ -106,7 +143,7 @@ function InputPage() {
         </div>
       </div>
 
-      <div className='flex flex-col justify-center items-center w-[65%] space-y-8'>
+      <div className='flex flex-col justify-center items-center w-[75%] space-y-8'>
         <p className='outfit text-[#212121] font-bold text-[35px]'>Post Analytic Form</p>
         <form onSubmit={handleSubmit}>
           <label className="block nunito text-[#444B59] font-semibold">When do you plan for posting?</label>
@@ -144,11 +181,45 @@ function InputPage() {
 
         {/* Message with enhanced styling */}
         {message && (
-          <div className="w-96 mt-4 p-6 bg-green-100 text-green-700 rounded-lg shadow-lg">
-            <h3 className="font-bold text-xl mb-2">Response:</h3>
-            <div className="prose max-w-none text-sm">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
-            </div>
+          <div className="space-y-4 mt-4">
+            {parsedMessage.insights.length > 0 && (
+              <div className="w-[780px] p-6 bg-blue-100 text-blue-700 rounded-lg shadow-lg">
+                <h3 className="font-bold text-xl mb-2">Insights:</h3>
+                <ul className="pl-5">
+                  {parsedMessage.insights.map((insight, index) => (
+                    <li key={index} className='mt-2'>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {parsedMessage.comparativeInsights.length > 0 && (
+              <div className="w-[780px] p-6 bg-yellow-100 text-yellow-700 rounded-lg shadow-lg">
+                <h3 className="font-bold text-xl mb-2">Comparative Insights:</h3>
+                <ul className="pl-5">
+                  {parsedMessage.comparativeInsights.map((insight, index) => (
+                    <li key={index} className='mt-2'>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {parsedMessage.suggestions.length > 0 && (
+              <div className="w-[780px] p-6 bg-green-100 text-green-700 rounded-lg shadow-lg">
+                <h3 className="font-bold text-xl mb-2">Suggestions:</h3>
+                <ul className="pl-5">
+                  {parsedMessage.suggestions.map((suggestion, index) => (
+                    <li key={index} className='mt-2'>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{suggestion}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
 
