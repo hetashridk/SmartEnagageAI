@@ -29,7 +29,7 @@ function AnalyticSidebar({ isMinimized, toggleMinimize }) {
         </Link>
         <Link to='/'>
         <button className='text-white'>
-          <img src={arrow} alt="toggle" className={`transform ${isMinimized ? 'w-64 mt-6' : 'w-[30px]'}`} />
+          <img src={arrow} alt="toggle" className={`transform rotate-180 ${isMinimized ? 'w-64 mt-6' : 'w-[30px]'}`} />
         </button>
         </Link>
       </div>

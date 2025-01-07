@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
 import sampleData from '../utils/SampleData.json';
 import ChartSwitcherGroupedBar from '../Components/ChartSwitcherGroupedBar';
 import Chatbot from '../Components/Chatbot';
@@ -11,6 +12,16 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function AnalyticPageDay() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
+    // useEffect(() => {
+    //   // Register the datalabels plugin only for this component
+    //   ChartJS.register(ChartDataLabels);
+  
+    //   return () => {
+    //     // Unregister the datalabels plugin when the component unmounts
+    //     ChartJS.unregister(ChartDataLabels);
+    //   };
+    // }, []);
   
     const toggleSidebar = () => {
       setIsSidebarOpen(!isSidebarOpen);

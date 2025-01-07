@@ -14,7 +14,8 @@ function InputPage() {
   const [location, setLocation] = useState({ country: '', city: '' });
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingg, setLoadingg] = useState(false);
+  const [loadingChatbot, setLoadingChatbot] = useState(false);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
 
   const toggleMinimize = () => {
@@ -87,7 +88,7 @@ function InputPage() {
       }
     };
 
-    setLoading(true);
+    setLoadingg(true);
 
     try {
       const response = await fetch('/api/run', {
@@ -108,12 +109,12 @@ function InputPage() {
       } else {
         setErrorMessage('Failed to submit data.');
       }
-      setLoading(false);
+      setLoadingg(false);
 
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An error occurred. Please try again later.');
-      setLoading(false);
+      setLoadingg(false);
     }
   };
 
@@ -122,7 +123,7 @@ function InputPage() {
 
   return (
     <div className='flex'>
-      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[35%]'}`}>
+      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[35%]'} ${!message ? 'h-screen' : 'h-auto'}`}>
         <div className={`${isSidebarMinimized ? 'flex flex-col space-y-5 justify-center items-center' : 'flex justify-between items-center'}`}>
           <Link to='/'>
             <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px]'}`}>
@@ -138,7 +139,7 @@ function InputPage() {
         <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[198px] w-[430px]'}`}>
+        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[160px] w-[430px]' } ${message ? 'hidden' : 'block'}`}>
           <img src={CalenderImg} alt="calender" />
         </div>
       </div>
@@ -168,8 +169,8 @@ function InputPage() {
               <option value="Reel">Reel</option>
             </select>
           </div>
-          <button type="submit" className="w-96 py-2 px-4 mt-4 text-white bg-[#212121] hover:bg-[#7144F1] rounded-md" disabled={loading}>
-            {loading ? (
+          <button type="submit" className="w-96 py-2 px-4 mt-4 text-white bg-[#212121] hover:bg-[#7144F1] rounded-md" disabled={loadingg}>
+            {loadingg ? (
               <div className="flex justify-center items-center">
                 <div className="w-5 h-5 border-t-4 border-b-4 border-white rounded-full animate-spin"></div>
               </div>
@@ -231,7 +232,12 @@ function InputPage() {
           </div>
         )}
       </div>
-      <Chatbot toggleSidebar={toggleMinimize} />
+      <Chatbot
+              setLoading={setLoadingChatbot}
+              setErrorMessage={setErrorMessage}
+              toggleSidebar={toggleMinimize} 
+              loading={loadingChatbot}
+        />
     </div>
   );
 }
