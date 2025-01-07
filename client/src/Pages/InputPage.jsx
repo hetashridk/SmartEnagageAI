@@ -139,7 +139,7 @@ function InputPage() {
         <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block' } ${message ? 'hidden' : 'block'} ${errorMessage ? 'hidden' : 'block'}`}>
+        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block mt-14' } `}>
           <img src={CalenderImg} alt="calender" />
         </div>
       </div>

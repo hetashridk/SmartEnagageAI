@@ -52,28 +52,28 @@ function AnalyticPageLocation() {
         label: 'Carousal',
         data: Object.values(sampleData.location.posts.carousal),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.posts.image),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.posts.video),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
-        label: 'Reel/Shorts',
+        label: 'Reel',
         data: Object.values(sampleData.location.posts.reel),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
     ],
@@ -86,28 +86,28 @@ function AnalyticPageLocation() {
         label: 'Carousal',
         data: Object.values(sampleData.location.impressions.carousal),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.impressions.image),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.impressions.video),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
-        label: 'Reel/Shorts',
+        label: 'Reel',
         data: Object.values(sampleData.location.impressions.reel),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
     ],
@@ -120,28 +120,28 @@ function AnalyticPageLocation() {
         label: 'Carousal',
         data: Object.values(sampleData.location.likes.carousal),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.likes.image),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.likes.video),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
-        label: 'Reel/Shorts',
+        label: 'Reel',
         data: Object.values(sampleData.location.likes.reel),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
     ],
@@ -154,28 +154,28 @@ function AnalyticPageLocation() {
         label: 'Carousal',
         data: Object.values(sampleData.location.shares.carousal),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.shares.image),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.shares.video),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
-        label: 'Reel/Shorts',
+        label: 'Reel',
         data: Object.values(sampleData.location.shares.reel),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
     ],
@@ -188,28 +188,28 @@ function AnalyticPageLocation() {
         label: 'Carousal',
         data: Object.values(sampleData.location.comments.carousal),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.comments.image),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.comments.video),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
       {
-        label: 'Reel/Shorts',
+        label: 'Reel',
         data: Object.values(sampleData.location.comments.reel),
         backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
+        borderColor: colors.map(color => color.replace('80%', '60%')), 
         borderWidth: 1,
       },
     ],
@@ -229,7 +229,7 @@ function AnalyticPageLocation() {
             const total = data.reduce((acc, value) => acc + value, 0);
             const currentValue = data[tooltipItem.dataIndex];
             const percentage = ((currentValue / total) * 100).toFixed(2);
-            return `${tooltipItem.label}: ${percentage}%`;
+            return `${tooltipItem.dataset.label}: ${percentage}%`;
           },
         },
       },

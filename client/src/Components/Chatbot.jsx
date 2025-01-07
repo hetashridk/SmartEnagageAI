@@ -65,7 +65,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
         <FaCommentDots size={24} />
       </button>
       <div
-        className={`fixed top-0 right-0 w-[25%] h-screen bg-[#7144F1] shadow-lg p-4 transition-transform duration-300 ${isOpen ? 'transform translate-x-0' : 'transform translate-x-full'
+        className={`fixed top-0 right-0 w-[25%] h-screen bg-[#7144F1] shadow-lg p-4 transition-transform duration-300 flex flex-col ${isOpen ? 'transform translate-x-0' : 'transform translate-x-full'
           }`}
       >
         <div className="flex justify-between items-center mb-4">
@@ -83,26 +83,26 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
               </div>
             </div>
           ))}
-
-          <form onSubmit={handleSubmit} className='flex mt-[632px] fixed'>
-            <input
-              type="text"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 p-2 border border-gray-300 rounded-l-lg"
-            />
-            <button type="submit" disabled={loading} className="p-2 bg-blue-500 text-white rounded-r-lg">
-              {loading ? (
-                <div className="flex justify-center items-center">
-                  <div className="w-5 h-5 border-t-4 border-b-4 border-white rounded-full animate-spin"></div>
-                </div>
-              ) : (
-                'Send'
-              )}
-            </button>
-          </form>
         </div>
+
+        <form onSubmit={handleSubmit} className='flex items-end'>
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Type your message..."
+            className="flex p-2 border border-gray-300 rounded-l-lg w-[100%]"
+          />
+          <button type="submit" disabled={loading} className="p-2 bg-blue-500 text-white rounded-r-lg">
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <div className="w-5 h-5 border-t-4 border-b-4 border-white rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              'Send'
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );

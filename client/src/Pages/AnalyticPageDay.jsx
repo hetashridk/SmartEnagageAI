@@ -399,6 +399,9 @@ function AnalyticPageDay() {
             weight: 'bold',
             family: 'Arial',
           },
+          padding: {
+            top: 20,
+         },
         },
         ticks: {
           font: {
@@ -418,6 +421,9 @@ function AnalyticPageDay() {
             weight: 'bold',
             family: 'Arial',
           },
+          padding: {
+            bottom: 20,
+         },
         },
         ticks: {
           font: {
@@ -434,7 +440,7 @@ function AnalyticPageDay() {
     <div className='flex'>
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
-        <h2 className='text-2xl font-bold text-gray-800 mb-6'>Day/Time Analytics</h2>
+        <h2 className='text-2xl font-bold text-gray-800 mb-6'>Day & Time Analytics</h2>
         <div className='mb-6'>
           <h3 className='text-xl font-bold text-gray-800 mb-4'>Weekday</h3>
           <ChartSwitcherGroupedBar

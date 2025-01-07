@@ -20,7 +20,7 @@ function AnalyticPageType() {
     setIsSidebarMinimized(!isSidebarMinimized);
   };
 
-  const labels = ['Carousal', 'Image', 'Video', 'Reel/Shorts'];
+  const labels = ['Carousal', 'Image', 'Video', 'Reel'];
 
   const postsData = {
     labels,
@@ -54,6 +54,7 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
+        label: '',
         data: [
           sampleData.type.impressions.carousal,
           sampleData.type.impressions.image,
@@ -81,6 +82,7 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
+        label: '',
         data: [
           sampleData.type.likes.carousal,
           sampleData.type.likes.image,
@@ -108,6 +110,7 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
+        label: '',
         data: [
           sampleData.type.shares.carousal,
           sampleData.type.shares.image,
@@ -135,6 +138,7 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
+        label: '',
         data: [
           sampleData.type.comments.carousal,
           sampleData.type.comments.image,
@@ -179,6 +183,9 @@ function AnalyticPageType() {
             weight: 'bold',
             family: 'Arial',
           },
+          padding: {
+            top: 20,
+         },
         },
         ticks: {
           font: {
@@ -197,6 +204,9 @@ function AnalyticPageType() {
             weight: 'bold',
             family: 'Arial',
           },
+          padding: {
+            bottom: 20,
+         },
         },
         ticks: {
           font: {
