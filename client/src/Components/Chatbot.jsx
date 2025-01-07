@@ -31,7 +31,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
     setUserInput('');
 
     try {
-      const response = await fetch('/api/run', {
+      const response = await fetch('http://localhost:5173/api/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

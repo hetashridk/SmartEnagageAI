@@ -91,7 +91,7 @@ function InputPage() {
     setLoadingg(true);
 
     try {
-      const response = await fetch('/api/run', {
+      const response = await fetch('http://localhost:5173/api/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ function InputPage() {
         <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[160px] w-[430px]' } ${message ? 'hidden' : 'block'}`}>
+        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[160px] w-[430px]' } ${message ? 'hidden' : 'block'} ${errorMessage ? 'hidden' : 'block'}`}>
           <img src={CalenderImg} alt="calender" />
         </div>
       </div>
@@ -186,12 +186,15 @@ function InputPage() {
             {parsedMessage.insights.length > 0 && (
               <div className="w-[780px] p-6 bg-blue-100 text-blue-700 rounded-lg shadow-lg">
                 <h3 className="font-bold text-xl mb-2">Insights:</h3>
-                <ul className="pl-5">
+                <ul className="list-disc pl-5">
                   {parsedMessage.insights.map((insight, index) => (
                     <li key={index} className='mt-2'>
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
                     </li>
-                  ))}
+                  ))
+                  .filter((insight) => {
+                    return insight != '';
+                  })}
                 </ul>
               </div>
             )}
