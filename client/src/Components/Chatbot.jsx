@@ -84,7 +84,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
             </div>
           ))}
 
-          <form onSubmit={handleSubmit} className="flex mt-[632px]">
+          <form onSubmit={handleSubmit} className={`flex ${chatHistory.length ? 'mt-4' : 'mt-[632px]'}`}>
             <input
               type="text"
               value={userInput}
