@@ -31,6 +31,11 @@ function AnalyticPageAge() {
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
+        // font: {
+        //     size: 32,
+        //     weight: 'bold',
+        //     family: 'Arial',
+        //   },
       },
       {
         label: 'Image',
@@ -38,6 +43,11 @@ function AnalyticPageAge() {
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         borderColor: 'rgba(153, 102, 255, 1)',
         borderWidth: 1,
+        // font: {
+        //     size: 32,
+        //     weight: 'bold',
+        //     family: 'Arial',
+        //   },
       },
       {
         label: 'Video',
@@ -45,6 +55,11 @@ function AnalyticPageAge() {
         backgroundColor: 'rgba(255, 159, 64, 0.2)',
         borderColor: 'rgba(255, 159, 64, 1)',
         borderWidth: 1,
+        // font: {
+        //     size: 32,
+        //     weight: 'bold',
+        //     family: 'Arial',
+        //   },
       },
       {
         label: 'Reel/Shorts',
@@ -52,6 +67,11 @@ function AnalyticPageAge() {
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
+        // font: {
+        //     size: 32,
+        //     weight: 'bold',
+        //     family: 'Arial',
+        //   },
       },
     ],
   };
@@ -201,13 +221,37 @@ function AnalyticPageAge() {
         title: {
           display: true,
           text: 'Age Range',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
       y: {
         stacked: true,
         title: {
           display: true,
-          text: 'Count',
+          text: 'Frequency',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
     },

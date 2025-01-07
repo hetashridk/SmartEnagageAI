@@ -5,6 +5,7 @@ import arrow from '../../src/assets/BackArrow.png';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'; // Import react-markdown
 import remarkGfm from 'remark-gfm'; // Import GitHub-flavored markdown
+import Chatbot from '../Components/Chatbot';
 
 function InputPage() {
   const [dayType, setDayType] = useState('weekday');
@@ -14,6 +15,11 @@ function InputPage() {
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false); // New loading state
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
 
   useEffect(() => {
     const currentHour = new Date().getHours();
@@ -79,21 +85,23 @@ function InputPage() {
 
   return (
     <div className='flex h-screen'>
-      <div className='bg-[#7144F1] p-8 w-[35%]'>
-        <div className='flex'>
-          <div className='w-[31px] h-[31px] ml-5'>
-            <img src={Logo} alt="logo" />
-          </div>
+      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[35%]'}`}>
+        <div className={`${isSidebarMinimized ? 'flex flex-col space-y-5 justify-center items-center' : 'flex justify-between items-center'}`}>
+          <Link to='/'>
+            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px]'}`}>
+              <img src={Logo} alt="logo" />
+            </div>
+          </Link>
           <Link to='/analytic/age'>
-            <div className='w-[31px] h-[31px] ml-[350px] flex'>
+            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px] ml-[350px] flex'}`}>
               <img src={arrow} alt="back" />
             </div>
           </Link>
         </div>
-        <div className='mt-10 ml-5'>
+        <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className='relative top-[35px] left-[198px] w-[430px]'>
+        <div className={`relative ${isSidebarMinimized ? 'top-[400px] left-[850px] w-[250px]' : 'top-[35px] left-[198px] w-[430px]'}`}>
           <img src={CalenderImg} alt="calender" />
         </div>
       </div>
@@ -102,25 +110,25 @@ function InputPage() {
         <p className='outfit text-[#212121] font-bold text-[35px]'>Post Analytic Form</p>
         <form onSubmit={handleSubmit}>
           <label className="block nunito text-[#444B59] font-semibold">When do you plan for posting?</label>
-          <div className='flex space-x-4'>
+          <div className='flex space-x-4 mt-2'>
             <select value={dayType} onChange={(e) => setDayType(e.target.value)} className="block w-32 p-2 border border-gray-300 rounded-md">
               <option value="weekday">Weekday</option>
               <option value="weekend">Weekend</option>
             </select>
             <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="block w-[235px] p-2 border border-gray-300 rounded-md">
-              <option value="12AM to 6AM (Night)">12AM to 6AM (Night)</option>
-              <option value="6AM to 12PM (Morning)">6AM to 12PM (Morning)</option>
-              <option value="12PM to 6PM (Afternoon)">12PM to 6PM (Afternoon)</option>
-              <option value="6PM to 12AM (Evening)">6PM to 12AM (Evening)</option>
+              <option value="Night (12AM to 6AM)">Night (12AM to 6AM)</option>
+              <option value="Morning (6AM to 12PM))">Morning (6AM to 12PM)</option>
+              <option value="Afternoon (12PM to 6PM))">Afternoon (12PM to 6PM)</option>
+              <option value="Evening (6PM to 12AM)">Evening (6PM to 12AM)</option>
             </select>
           </div>
           <div className='mt-4'>
             <label className="block nunito text-[#444B59] font-semibold">Content Type</label>
-            <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="block w-96 p-2 border border-gray-300 rounded-md">
+            <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="block w-96 p-2 border border-gray-300 rounded-md mt-2">
               <option value="Carousal">Carousal</option>
               <option value="Image">Image</option>
               <option value="Video">Video</option>
-              <option value="Reel/Shorts">Reel/Shorts</option>
+              <option value="Reel">Reel</option>
             </select>
           </div>
           <button type="submit" className="w-96 py-2 px-4 mt-4 text-white bg-[#212121] hover:bg-[#7144F1] rounded-md" disabled={loading}>
@@ -152,6 +160,7 @@ function InputPage() {
           </div>
         )}
       </div>
+      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }

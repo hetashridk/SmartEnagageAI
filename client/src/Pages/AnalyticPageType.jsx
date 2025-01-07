@@ -26,6 +26,7 @@ function AnalyticPageType() {
     labels,
     datasets: [
       {
+        label: '',
         data: [
           sampleData.type.posts.carousal,
           sampleData.type.posts.image,
@@ -173,12 +174,36 @@ function AnalyticPageType() {
         title: {
           display: true,
           text: 'Type of Post',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Count',
+          text: 'Frequency',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
     },
