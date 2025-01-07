@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import sampleData from '../utils/SampleData.json';
 import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
@@ -12,6 +13,16 @@ function AnalyticPageLocation() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
 
+  // useEffect(() => {
+  //   // Register the datalabels plugin only for this component
+  //   ChartJS.register(ChartDataLabels);
+
+  //   return () => {
+  //     // Unregister the datalabels plugin when the component unmounts
+  //     ChartJS.unregister(ChartDataLabels);
+  //   };
+  // }, []);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -22,35 +33,47 @@ function AnalyticPageLocation() {
 
   const labels = Object.keys(sampleData.location.posts.carousal);
 
+  // Generate a unique light color for each country
+  const generateColors = (numColors) => {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+      const color = `hsl(${(i * 360) / numColors}, 70%, 80%)`; // Light color with 80% lightness
+      colors.push(color);
+    }
+    return colors;
+  };
+
+  const colors = generateColors(labels.length);
+
   const postsData = {
     labels,
     datasets: [
       {
         label: 'Carousal',
         data: Object.values(sampleData.location.posts.carousal),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.posts.image),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.posts.video),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Reel/Shorts',
         data: Object.values(sampleData.location.posts.reel),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
     ],
@@ -62,29 +85,29 @@ function AnalyticPageLocation() {
       {
         label: 'Carousal',
         data: Object.values(sampleData.location.impressions.carousal),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.impressions.image),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.impressions.video),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Reel/Shorts',
         data: Object.values(sampleData.location.impressions.reel),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
     ],
@@ -96,29 +119,29 @@ function AnalyticPageLocation() {
       {
         label: 'Carousal',
         data: Object.values(sampleData.location.likes.carousal),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.likes.image),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.likes.video),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Reel/Shorts',
         data: Object.values(sampleData.location.likes.reel),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
     ],
@@ -130,29 +153,29 @@ function AnalyticPageLocation() {
       {
         label: 'Carousal',
         data: Object.values(sampleData.location.shares.carousal),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.shares.image),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.shares.video),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Reel/Shorts',
         data: Object.values(sampleData.location.shares.reel),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
     ],
@@ -164,29 +187,29 @@ function AnalyticPageLocation() {
       {
         label: 'Carousal',
         data: Object.values(sampleData.location.comments.carousal),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Image',
         data: Object.values(sampleData.location.comments.image),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Video',
         data: Object.values(sampleData.location.comments.video),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
       {
         label: 'Reel/Shorts',
         data: Object.values(sampleData.location.comments.reel),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: colors,
+        borderColor: colors.map(color => color.replace('80%', '60%')), // Slightly darker border
         borderWidth: 1,
       },
     ],
@@ -200,9 +223,32 @@ function AnalyticPageLocation() {
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: function (tooltipItem) {
+            const data = tooltipItem.dataset.data;
+            const total = data.reduce((acc, value) => acc + value, 0);
+            const currentValue = data[tooltipItem.dataIndex];
+            const percentage = ((currentValue / total) * 100).toFixed(2);
+            return `${tooltipItem.label}: ${percentage}%`;
+          },
+        },
+      },
+      datalabels: {
+        formatter: (value, context) => {
+          const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+          const percentage = ((value / total) * 100).toFixed(2);
+          return `${percentage}%`;
+        },
+        color: '#000000',
+        font: {
+          weight: 'bold',
+          size: 10
+        },
       },
     },
     maintainAspectRatio: false,
+    cutout: '50%',
+    spacing: 5,
   };
 
   return (
@@ -210,14 +256,16 @@ function AnalyticPageLocation() {
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
-      <ChartSwitcherDonut
-          postsData={postsData}
-          impressionsData={impressionsData}
-          likesData={likesData}
-          sharesData={sharesData}
-          commentsData={commentsData}
-          options={options}
-        />
+        <div className='space-y-6'>
+          <ChartSwitcherDonut
+            postsData={postsData}
+            impressionsData={impressionsData}
+            likesData={likesData}
+            sharesData={sharesData}
+            commentsData={commentsData}
+            options={options}
+          />
+        </div>
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>
