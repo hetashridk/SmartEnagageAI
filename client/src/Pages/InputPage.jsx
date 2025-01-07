@@ -64,6 +64,7 @@ function InputPage() {
 
       if (response.ok) {
         setMessage(data.outputs[0].outputs[0].artifacts.message);
+        setErrorMessage('');
       } else {
         setErrorMessage('Failed to submit data.');
       }
