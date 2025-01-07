@@ -123,7 +123,7 @@ function InputPage() {
 
   return (
     <div className='flex'>
-      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[35%]'} ${!message ? 'h-screen' : 'h-auto'}`}>
+      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[25%]'} ${!message ? 'h-screen' : 'h-auto'}`}>
         <div className={`${isSidebarMinimized ? 'flex flex-col space-y-5 justify-center items-center' : 'flex justify-between items-center'}`}>
           <Link to='/'>
             <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px]'}`}>
@@ -131,7 +131,7 @@ function InputPage() {
             </div>
           </Link>
           <Link to='/analytic/age'>
-            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px] ml-[350px] flex'}`}>
+            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px] ml-[250px] flex'}`}>
               <img src={arrow} alt="back" />
             </div>
           </Link>
