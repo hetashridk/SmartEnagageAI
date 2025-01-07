@@ -49,7 +49,18 @@ app.post('/api/run', async (req, res) => {
 // Data flow API route
 app.post('/api/data', async (req, res) => {
   try {
+    const { input_value, input_type, output_type, param } = req.body;
     const apiUrl = `${BASE_URL}/lf/${LANGFLOW_ID}/api/v1/run/${DATA_FLOW_ID}?stream=false`;
+    const payload = {
+      input_value: input_value || 'message',
+      input_type: input_type || 'chat',
+      output_type: output_type || 'chat',
+      tweaks: {
+        "TextInput-Umua0": {
+          "input_value": param
+        }
+      },
+    };
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -57,7 +68,7 @@ app.post('/api/data', async (req, res) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${DATA_APPLICATION_TOKEN}`,
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
@@ -78,7 +89,7 @@ app.post('/api/data', async (req, res) => {
 export default app;
 
 // if (!process.env.IS_SERVERLESS) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 // }
