@@ -102,29 +102,20 @@ function AnalyticPageLocation() {
     maintainAspectRatio: false,
   };
 
-  // If the data is still loading or no valid data found, show a loading spinner or message
-  if (loading) {
-    return <Spinner />;
-  }
-
-  // If the data is missing or null, display a message indicating no data is available
-  if (!postsData || !impressionsData || !likesData || !sharesData || !commentsData) {
-    return <div>No data available to display</div>;
-  }
 
   return (
-    <div className='flex'>
+    <div className='h-screen flex'>
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
-        <ChartSwitcherDonut
+        {loading ? <Spinner /> : <ChartSwitcherDonut
           postsData={postsData}
           impressionsData={impressionsData}
           likesData={likesData}
           sharesData={sharesData}
           commentsData={commentsData}
           options={options}
-        />
+        />}
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>

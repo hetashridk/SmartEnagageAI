@@ -41,7 +41,7 @@ function AnalyticPageLocation() {
 
   if (!data) {
     return (
-      <div className='flex'>
+      <div className='h-screen flex'>
         <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
         <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
           <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
