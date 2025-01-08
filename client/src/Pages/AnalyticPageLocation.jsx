@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
-import sampleData from '../utils/SampleData.json';
 import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
 import Chatbot from '../Components/Chatbot';
+import Spinner from '../Components/Spinner';
 
 // Register the necessary components with Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -12,6 +12,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function AnalyticPageLocation() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   // useEffect(() => {
   //   // Register the datalabels plugin only for this component
@@ -27,11 +30,28 @@ function AnalyticPageLocation() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleMinimize = () => {
-    setIsSidebarMinimized(!isSidebarMinimized);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ param: 'location' }),
+        });
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const labels = Object.keys(sampleData.location.posts.carousal);
+    fetchData();
+  }, []);
+
 
   // Generate a unique light color for each country
   const generateColors = (numColors) => {
@@ -147,11 +167,13 @@ function AnalyticPageLocation() {
     ],
   };
 
-  const sharesData = {
+
+  const createChartData = (category) => ({
     labels,
     datasets: [
       {
         label: 'Carousal',
+
         data: Object.values(sampleData.location.shares.carousal),
         backgroundColor: colors,
         borderColor: colors.map(color => color.replace('80%', '60%')), 
@@ -159,6 +181,7 @@ function AnalyticPageLocation() {
       },
       {
         label: 'Image',
+
         data: Object.values(sampleData.location.shares.image),
         backgroundColor: colors,
         borderColor: colors.map(color => color.replace('80%', '60%')), 
@@ -176,10 +199,12 @@ function AnalyticPageLocation() {
         data: Object.values(sampleData.location.shares.reel),
         backgroundColor: colors,
         borderColor: colors.map(color => color.replace('80%', '60%')), 
+
         borderWidth: 1,
       },
     ],
-  };
+  });
+
 
   const commentsData = {
     labels,
@@ -214,6 +239,7 @@ function AnalyticPageLocation() {
       },
     ],
   };
+
 
   const options = {
     responsive: true,
@@ -259,7 +285,9 @@ function AnalyticPageLocation() {
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
+
         <div className='space-y-6'>
+
           <ChartSwitcherDonut
             postsData={postsData}
             impressionsData={impressionsData}
@@ -268,7 +296,9 @@ function AnalyticPageLocation() {
             commentsData={commentsData}
             options={options}
           />
+
         </div>
+
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>

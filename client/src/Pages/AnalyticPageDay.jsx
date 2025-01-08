@@ -1,37 +1,19 @@
-import React, { useEffect, useState } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  PointElement,
-  Legend,
-  LineElement
-} from "chart.js";
-import AnalyticSidebar from "../Components/AnalyticSidebar";
-// import ChartDataLabels from 'chartjs-plugin-datalabels';
-import sampleData from "../utils/SampleData.json";
-import ChartSwitcherGroupedBar from "../Components/ChartSwitcherGroupedBar";
-import Chatbot from "../Components/Chatbot";
-import ChartSwitcherLine from "../Components/ChartSwitcherLine";
+
+import React, { useEffect, useState } from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import AnalyticSidebar from '../Components/AnalyticSidebar';
+import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
+import Chatbot from '../Components/Chatbot';
+import Spinner from '../Components/Spinner';
 
 // Register the necessary components with Chart.js
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement,
-  LineElement
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-function AnalyticPageDay() {
+
+function AnalyticPageLocation() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+
 
   // useEffect(() => {
   //   // Register the datalabels plugin only for this component
@@ -526,9 +508,12 @@ function AnalyticPageDay() {
         },
       },
     },
+    maintainAspectRatio: false,
   };
 
+
   return (
+
     <div className="flex">
       <AnalyticSidebar
         isMinimized={isSidebarMinimized}
@@ -560,10 +545,11 @@ function AnalyticPageDay() {
             options={options}
           />
         </div>
+
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }
 
-export default AnalyticPageDay;
+export default AnalyticPageLocation;
