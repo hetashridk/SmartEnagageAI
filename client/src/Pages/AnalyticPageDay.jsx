@@ -1,29 +1,68 @@
+import React, { useEffect, useState } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  PointElement,
+  Legend,
+  LineElement
+} from "chart.js";
+import AnalyticSidebar from "../Components/AnalyticSidebar";
+import ChartSwitcherGroupedBar from "../Components/ChartSwitcherGroupedBar";
+import Chatbot from "../Components/Chatbot";
+import ChartSwitcherLine from "../Components/ChartSwitcherLine";
+import Spinner from "../Components/Spinner";
 
-import React, { useEffect, useState } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import AnalyticSidebar from '../Components/AnalyticSidebar';
-import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
-import Chatbot from '../Components/Chatbot';
-import Spinner from '../Components/Spinner';
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+);
 
-// Register the necessary components with Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-
-function AnalyticPageLocation() {
+function AnalyticPageDay() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [chartData, setChartData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setFetchError(false);  // Reset error state before fetching
+        const response = await fetch("/api/data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ param: "day_time" }),
+        });
 
-  // useEffect(() => {
-  //   // Register the datalabels plugin only for this component
-  //   ChartJS.register(ChartDataLabels);
+        const data = await response.json();
 
-  //   return () => {
-  //     // Unregister the datalabels plugin when the component unmounts
-  //     ChartJS.unregister(ChartDataLabels);
-  //   };
-  // }, []);
+        if (!data || !data.posts) {
+          throw new Error("Invalid data structure");
+        }
+
+        setChartData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setFetchError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -33,430 +72,40 @@ function AnalyticPageLocation() {
     setIsSidebarMinimized(!isSidebarMinimized);
   };
 
-  const labelsPosts = Object.keys(sampleData.day_and_time.posts);
-  const labelsImpressions = Object.keys(sampleData.day_and_time.impressions);
-  const labelsLikes = Object.keys(sampleData.day_and_time.likes);
-  const labelsComments = Object.keys(sampleData.day_and_time.comments);
-  const labelsShares = Object.keys(sampleData.day_and_time.shares);
-
-  const weekdayDataPosts = {
-    labels: labelsPosts,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataPosts = {
-    labels: labelsPosts,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekdayDataImpressions = {
-    labels: labelsImpressions,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataImpressions = {
-    labels: labelsImpressions,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekdayDataLikes = {
-    labels: labelsLikes,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataLikes = {
-    labels: labelsLikes,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekdayDataComments = {
-    labels: labelsComments,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataComments = {
-    labels: labelsComments,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekdayDataShares = {
-    labels: labelsShares,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataShares = {
-    labels: labelsShares,
-    datasets: [
-      {
-        label: "Carousel",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].carousel
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Reel",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].reel
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Image",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].image
-        ),
-        backgroundColor: "rgba(255, 206, 86, 0.2)",
-        borderColor: "rgba(255, 206, 86, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "Video",
-        data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].video
-        ),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
+  const generateChartData = (labels, dataKey, typeIndex) => {
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Carousel",
+          data: labels.map(label => dataKey[label]?.[typeIndex]?.carousel || 0),
+          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+        {
+          label: "Reel",
+          data: labels.map(label => dataKey[label]?.[typeIndex]?.reel || 0),
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+        {
+          label: "Image",
+          data: labels.map(label => dataKey[label]?.[typeIndex]?.image || 0),
+          backgroundColor: "rgba(255, 206, 86, 0.2)",
+          borderColor: "rgba(255, 206, 86, 1)",
+          borderWidth: 1,
+        },
+        {
+          label: "Video",
+          data: labels.map(label => dataKey[label]?.[typeIndex]?.video || 0),
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
   };
 
   const options = {
@@ -464,7 +113,7 @@ function AnalyticPageLocation() {
     scales: {
       x: {
         stacked: true,
-        barThickness: 50, // Adjust this value to control the thickness of the bars
+        barThickness: 50,
         title: {
           display: true,
           text: "Time Period of Day",
@@ -508,12 +157,11 @@ function AnalyticPageLocation() {
         },
       },
     },
-    maintainAspectRatio: false,
   };
 
+  const labelsPosts = chartData ? Object.keys(chartData.posts) : [];
 
   return (
-
     <div className="flex">
       <AnalyticSidebar
         isMinimized={isSidebarMinimized}
@@ -523,33 +171,41 @@ function AnalyticPageLocation() {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           Day & Time Analytics
         </h2>
-        <div className="mb-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Weekday</h3>
-          <ChartSwitcherLine
-            postsData={weekdayDataPosts}
-            impressionsData={weekdayDataImpressions}
-            likesData={weekdayDataLikes}
-            commentsData={weekdayDataComments}
-            sharesData={weekdayDataShares}
-            options={options}
-          />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Weekend</h3>
-          <ChartSwitcherLine
-            postsData={weekendDataPosts}
-            impressionsData={weekendDataImpressions}
-            likesData={weekendDataLikes}
-            commentsData={weekendDataComments}
-            sharesData={weekendDataShares}
-            options={options}
-          />
-        </div>
+        {isLoading ? (
+          <Spinner />
+        ) : fetchError || !chartData ? (
+          <div className="text-red-500 text-center">Error loading data. Please try again later.</div>
+        ) : (
+          <>
+            <div className="mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Weekday</h3>
+              <ChartSwitcherLine
+                postsData={generateChartData(labelsPosts, chartData.posts, 0)}
+                impressionsData={generateChartData(labelsPosts, chartData.impressions, 0)}
+                likesData={generateChartData(labelsPosts, chartData.likes, 0)}
+                commentsData={generateChartData(labelsPosts, chartData.comments, 0)}
+                sharesData={generateChartData(labelsPosts, chartData.shares, 0)}
+                options={options}
+              />
+            </div>
 
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Weekend</h3>
+              <ChartSwitcherLine
+                postsData={generateChartData(labelsPosts, chartData.posts, 1)}
+                impressionsData={generateChartData(labelsPosts, chartData.impressions, 1)}
+                likesData={generateChartData(labelsPosts, chartData.likes, 1)}
+                commentsData={generateChartData(labelsPosts, chartData.comments, 1)}
+                sharesData={generateChartData(labelsPosts, chartData.shares, 1)}
+                options={options}
+              />
+            </div>
+          </>
+        )}
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }
 
-export default AnalyticPageLocation;
+export default AnalyticPageDay;

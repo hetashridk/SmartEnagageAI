@@ -17,16 +17,16 @@ function AnalyticPageAge() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ param: 'age' }),
-        });
+        // const response = await fetch('/api/data', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ param: 'age' }),
+        // });
 
-        const result = await response.json();
-        console.log(result);
+        // const result = await response.json();
+        const result = null
         setAgeData(result);
       } catch (error) {
         console.error('Failed to fetch data:', error);

@@ -8,7 +8,6 @@ import Spinner from '../Components/Spinner';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyticPageType() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,8 +28,10 @@ function AnalyticPageType() {
           throw new Error(`Error: ${response.statusText}`);
         }
 
-
         const result = await response.json();
+        if (!result || Object.keys(result).length === 0) {
+          throw new Error('No data available for type analytics');
+        }
         setData(result);
       } catch (err) {
         setError(err.message);
@@ -42,14 +43,15 @@ function AnalyticPageType() {
     fetchData();
   }, []);
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleMinimize = () => setIsSidebarMinimized(!isSidebarMinimized);
 
   const labels = ['Carousal', 'Image', 'Video', 'Reel/Shorts'];
-  const defaultDataset = [0, 0, 0, 0];
 
   const createChartData = (category) => {
-    const categoryData = data ? data[category] || {} : {};
+    if (!data || !data[category]) {
+      return null;
+    }
+    const categoryData = data[category];
     return {
       labels,
       datasets: [
@@ -58,19 +60,19 @@ function AnalyticPageType() {
             categoryData.carousal || 0,
             categoryData.image || 0,
             categoryData.video || 0,
-            categoryData.reel || 0
+            categoryData.reel || 0,
           ],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
+            'rgba(75, 192, 192, 0.2)',
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)'
+            'rgba(75, 192, 192, 1)',
           ],
           borderWidth: 1,
         },
@@ -85,70 +87,43 @@ function AnalyticPageType() {
       title: { display: true, text: 'Analytics by Type' },
     },
     scales: {
-
       x: {
         title: {
           display: true,
           text: 'Type of Post',
-          font: {
-            size: 16,
-            weight: 'bold',
-            family: 'Arial',
-          },
-          padding: {
-            top: 20,
-         },
+          font: { size: 16, weight: 'bold', family: 'Arial' },
+          padding: { top: 20 },
         },
-        ticks: {
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Arial',
-          },
-        },
+        ticks: { font: { size: 14, weight: 'bold', family: 'Arial' } },
       },
       y: {
         title: {
           display: true,
           text: 'Frequency',
-          font: {
-            size: 16,
-            weight: 'bold',
-            family: 'Arial',
-          },
-          padding: {
-            bottom: 20,
-         },
+          font: { size: 16, weight: 'bold', family: 'Arial' },
+          padding: { bottom: 20 },
         },
-        ticks: {
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Arial',
-          },
-        },
+        ticks: { font: { size: 14, weight: 'bold', family: 'Arial' } },
       },
-
     },
   };
 
-  if (error) return <div>Error: {error}</div>;
-  
-
   return (
-    <div className='h-screen flex'>
+    <div className="h-screen flex">
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
-        <h2 className='text-2xl font-bold text-gray-800 mb-6'>Type Analytics</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Type Analytics</h2>
         {loading ? (
           <Spinner />
+        ) : error ? (
+          <div className="text-red-500 font-bold">Error: {error}</div>
         ) : (
           <ChartSwitcherBar
-            postsData={createChartData('posts')}
-            impressionsData={createChartData('impressions')}
-            likesData={createChartData('likes')}
-            sharesData={createChartData('shares')}
-            commentsData={createChartData('comments')}
+            postsData={createChartData('posts') || { labels, datasets: [] }}
+            impressionsData={createChartData('impressions') || { labels, datasets: [] }}
+            likesData={createChartData('likes') || { labels, datasets: [] }}
+            sharesData={createChartData('shares') || { labels, datasets: [] }}
+            commentsData={createChartData('comments') || { labels, datasets: [] }}
             options={options}
           />
         )}
