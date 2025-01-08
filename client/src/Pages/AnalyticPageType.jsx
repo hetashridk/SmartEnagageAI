@@ -29,6 +29,7 @@ function AnalyticPageType() {
           throw new Error(`Error: ${response.statusText}`);
         }
 
+
         const result = await response.json();
         setData(result);
       } catch (err) {
@@ -84,8 +85,50 @@ function AnalyticPageType() {
       title: { display: true, text: 'Analytics by Type' },
     },
     scales: {
-      x: { title: { display: true, text: 'Type of Post' } },
-      y: { title: { display: true, text: 'Count' } },
+
+      x: {
+        title: {
+          display: true,
+          text: 'Type of Post',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+          padding: {
+            top: 20,
+         },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Frequency',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+          padding: {
+            bottom: 20,
+         },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
+        },
+      },
+
     },
   };
 

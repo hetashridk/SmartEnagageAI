@@ -87,6 +87,7 @@ function AnalyticPageAge() {
   const commentsData = createChartData('comments');
 
 
+
   const options = {
     responsive: true,
     scales: {
