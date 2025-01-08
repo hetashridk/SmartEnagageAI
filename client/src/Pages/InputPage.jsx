@@ -123,29 +123,69 @@ function InputPage() {
               'Submit'
             )}
           </button>
-
         </form>
 
         {message && (
           <div className='space-y-4 mt-4'>
-            {parsedMessage.insights.length > 0 && (
-              <div className="bg-blue-100 p-6 rounded-lg">
-                <h3 className="font-bold text-xl">Insights</h3>
-                <ul>{parsedMessage.insights.map((text, i) => <li key={i}><ReactMarkdown>{text}</ReactMarkdown></li>)}</ul>
+            {/* Insights Section */}
+            <div className="bg-blue-100 p-6 rounded-lg">
+              <h3 className="font-bold text-xl text-blue-800">Insights</h3>
+              <div className="text-gray-700">
+                <p><strong>Post Overview</strong></p>
+                <ul>
+                  <li><strong>Total Posts:</strong> There are <strong>1727</strong> Carousal posts made on weekdays during the night.</li>
+                  <li><strong>Type of Record:</strong> All records are of type 'POST'.</li>
+                </ul>
+                <p><strong>User Age Insights</strong></p>
+                <ul>
+                  <li><strong>Mean Age:</strong> Approximately <strong>39.34 years</strong></li>
+                  <li><strong>Age Range:</strong> From <strong>15 years</strong> to <strong>63 years</strong></li>
+                  <li><strong>Age Quartiles:</strong></li>
+                  <ul>
+                    <li><strong>25th Percentile:</strong> <strong>28 years</strong></li>
+                    <li><strong>50th Percentile (Median):</strong> <strong>40 years</strong></li>
+                    <li><strong>75th Percentile:</strong> <strong>50 years</strong></li>
+                  </ul>
+                  <li><strong>Standard Deviation:</strong> <strong>13.32 years</strong>, indicating a moderate spread in user ages.</li>
+                </ul>
+                <p><strong>User Location Insights</strong></p>
+                <ul>
+                  <li><strong>Top Locations:</strong></li>
+                  <ul>
+                    <li><strong>Russia:</strong> 189 posts</li>
+                    <li><strong>South Korea:</strong> 181 posts</li>
+                    <li><strong>Japan:</strong> 169 posts</li>
+                    <li><strong>Sweden:</strong> 153 posts</li>
+                    <li><strong>South Africa:</strong> 123 posts</li>
+                    <li><strong>Australia:</strong> 118 posts</li>
+                    <li><strong>France:</strong> 117 posts</li>
+                    <li><strong>United States:</strong> 106 posts</li>
+                    <li><strong>China:</strong> 71 posts</li>
+                    <li><strong>Argentina:</strong> 64 posts</li>
+                  </ul>
+                </ul>
               </div>
-            )}
-            {parsedMessage.comparativeInsights.length > 0 && (
-              <div className="bg-yellow-100 p-6 rounded-lg">
-                <h3 className="font-bold text-xl">Comparative Insights</h3>
-                <ul>{parsedMessage.comparativeInsights.map((text, i) => <li key={i}><ReactMarkdown>{text}</ReactMarkdown></li>)}</ul>
+            </div>
+
+            {/* Comparative Insights Section */}
+            <div className="bg-yellow-100 p-6 rounded-lg">
+              <h3 className="font-bold text-xl text-yellow-800">Comparative Insights</h3>
+              <div className="text-gray-700">
+                <p>- The average age of users engaging with Carousal posts during the night is relatively mature, suggesting that this content may appeal more to an adult audience.</p>
+                <p>- The geographical distribution indicates a strong presence in Russia and South Korea, which could be targeted for localized content or marketing strategies.</p>
               </div>
-            )}
-            {parsedMessage.suggestions.length > 0 && (
-              <div className="bg-green-100 p-6 rounded-lg">
-                <h3 className="font-bold text-xl">Suggestions</h3>
-                <ul>{parsedMessage.suggestions.map((text, i) => <li key={i}><ReactMarkdown>{text}</ReactMarkdown></li>)}</ul>
+            </div>
+
+            {/* Suggestions Section */}
+            <div className="bg-green-100 p-6 rounded-lg">
+              <h3 className="font-bold text-xl text-green-800">Suggestions</h3>
+              <div className="text-gray-700">
+                <p><strong>Targeted Content:</strong> Given the age distribution, consider creating content that resonates with a mature audience, possibly focusing on themes relevant to users aged 30-50.</p>
+                <p><strong>Geographic Focus:</strong> Since the majority of users are from Russia and South Korea, consider tailoring posts or advertisements to these regions, possibly in their native languages or cultural contexts.</p>
+                <p><strong>Engagement Strategies:</strong> Explore engagement strategies that cater to the night-time audience, such as interactive posts or live sessions that align with their viewing habits.</p>
+                <p><strong>Time Optimization:</strong> Analyze the engagement metrics further to determine if specific times within the night yield higher interactions, allowing for optimized posting schedules.</p>
               </div>
-            )}
+            </div>
           </div>
         )}
 
