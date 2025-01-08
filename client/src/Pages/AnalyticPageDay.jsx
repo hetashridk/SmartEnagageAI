@@ -485,7 +485,7 @@ function AnalyticPageDay() {
         barThickness: 50, // Adjust this value to control the thickness of the bars
         title: {
           display: true,
-          text: "Type of Post",
+          text: "Time Period of Day",
           font: {
             size: 16,
             weight: "bold",
