@@ -1,726 +1,905 @@
 {
-    "age": {
-      "posts": [
-        {
-          "range": "15-25",
-          "video_count": "120",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "12"
-        },
-        {
-          "range": "25-35",
-          "video_count": "10",
-          "carousal_count": "120",
-          "image_count": "180",
-          "reel_count": "125"
-        },
-        {
-          "range": "35-45",
-          "video_count": "110",
-          "carousal_count": "120",
-          "image_count": "130",
-          "reel_count": "128"
-        },
-        {
-          "range": "45-55",
-          "video_count": "170",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "120"
-        },
-        {
-          "range": "55-65",
-          "video_count": "210",
-          "carousal_count": "250",
-          "image_count": "214",
-          "reel_count": "200"
-        }
-      ],
-      "impressions": [
-        {
-          "range": "15-25",
-          "video_count": "120",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "12"
-        },
-        {
-          "range": "25-35",
-          "video_count": "10",
-          "carousal_count": "120",
-          "image_count": "180",
-          "reel_count": "125"
-        },
-        {
-          "range": "35-45",
-          "video_count": "110",
-          "carousal_count": "120",
-          "image_count": "130",
-          "reel_count": "128"
-        },
-        {
-          "range": "45-55",
-          "video_count": "170",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "120"
-        },
-        {
-          "range": "55-65",
-          "video_count": "210",
-          "carousal_count": "250",
-          "image_count": "214",
-          "reel_count": "200"
-        }
-      ],
-      "likes": [
-        {
-          "range": "15-25",
-          "video_count": "120",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "12"
-        },
-        {
-          "range": "25-35",
-          "video_count": "10",
-          "carousal_count": "120",
-          "image_count": "180",
-          "reel_count": "125"
-        },
-        {
-          "range": "35-45",
-          "video_count": "110",
-          "carousal_count": "120",
-          "image_count": "130",
-          "reel_count": "128"
-        },
-        {
-          "range": "45-55",
-          "video_count": "170",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "120"
-        },
-        {
-          "range": "55-65",
-          "video_count": "210",
-          "carousal_count": "250",
-          "image_count": "214",
-          "reel_count": "200"
-        }
-      ],
-      "comments": [
-        {
-          "range": "15-25",
-          "video_count": "120",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "12"
-        },
-        {
-          "range": "25-35",
-          "video_count": "10",
-          "carousal_count": "120",
-          "image_count": "180",
-          "reel_count": "125"
-        },
-        {
-          "range": "35-45",
-          "video_count": "110",
-          "carousal_count": "120",
-          "image_count": "130",
-          "reel_count": "128"
-        },
-        {
-          "range": "45-55",
-          "video_count": "170",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "120"
-        },
-        {
-          "range": "55-65",
-          "video_count": "210",
-          "carousal_count": "250",
-          "image_count": "214",
-          "reel_count": "200"
-        }
-      ],
-      "shares": [
-        {
-          "range": "15-25",
-          "video_count": "120",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "12"
-        },
-        {
-          "range": "25-35",
-          "video_count": "10",
-          "carousal_count": "120",
-          "image_count": "180",
-          "reel_count": "125"
-        },
-        {
-          "range": "35-45",
-          "video_count": "110",
-          "carousal_count": "120",
-          "image_count": "130",
-          "reel_count": "128"
-        },
-        {
-          "range": "45-55",
-          "video_count": "170",
-          "carousal_count": "110",
-          "image_count": "150",
-          "reel_count": "120"
-        },
-        {
-          "range": "55-65",
-          "video_count": "210",
-          "carousal_count": "250",
-          "image_count": "214",
-          "reel_count": "200"
-        }
-      ]
-    },
-    "location": {
-      "posts": {
-        "carousal": {
-          "India": "12",
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "video": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "reel": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "image": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        }
+  "age": {
+    "posts": [
+      {
+        "range": "15-25",
+        "video_count": "120",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "12"
       },
-      "impressions": {
-        "carousal": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "video": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "reel": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "image": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        }
+      {
+        "range": "25-35",
+        "video_count": "10",
+        "carousal_count": "120",
+        "image_count": "180",
+        "reel_count": "125"
       },
-      "likes": {
-        "carousal": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "video": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "reel": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "image": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        }
+      {
+        "range": "35-45",
+        "video_count": "110",
+        "carousal_count": "120",
+        "image_count": "130",
+        "reel_count": "128"
       },
-      "comments": {
-        "carousal": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "video": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "reel": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "image": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        }
+      {
+        "range": "45-55",
+        "video_count": "170",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "120"
       },
-      "shares": {
-        "carousal": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "video": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "reel": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        },
-        "image": {
-          "India": 12,
-          "Germany": 23,
-          "United States": 30,
-          "Brazil": 10,
-          "Japan": 15,
-          "Others": 20
-        }
+      {
+        "range": "55-65",
+        "video_count": "210",
+        "carousal_count": "250",
+        "image_count": "214",
+        "reel_count": "200"
+      }
+    ],
+    "impressions": [
+      {
+        "range": "15-25",
+        "video_count": "120",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "12"
+      },
+      {
+        "range": "25-35",
+        "video_count": "10",
+        "carousal_count": "120",
+        "image_count": "180",
+        "reel_count": "125"
+      },
+      {
+        "range": "35-45",
+        "video_count": "110",
+        "carousal_count": "120",
+        "image_count": "130",
+        "reel_count": "128"
+      },
+      {
+        "range": "45-55",
+        "video_count": "170",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "120"
+      },
+      {
+        "range": "55-65",
+        "video_count": "210",
+        "carousal_count": "250",
+        "image_count": "214",
+        "reel_count": "200"
+      }
+    ],
+    "likes": [
+      {
+        "range": "15-25",
+        "video_count": "120",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "12"
+      },
+      {
+        "range": "25-35",
+        "video_count": "10",
+        "carousal_count": "120",
+        "image_count": "180",
+        "reel_count": "125"
+      },
+      {
+        "range": "35-45",
+        "video_count": "110",
+        "carousal_count": "120",
+        "image_count": "130",
+        "reel_count": "128"
+      },
+      {
+        "range": "45-55",
+        "video_count": "170",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "120"
+      },
+      {
+        "range": "55-65",
+        "video_count": "210",
+        "carousal_count": "250",
+        "image_count": "214",
+        "reel_count": "200"
+      }
+    ],
+    "comments": [
+      {
+        "range": "15-25",
+        "video_count": "120",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "12"
+      },
+      {
+        "range": "25-35",
+        "video_count": "10",
+        "carousal_count": "120",
+        "image_count": "180",
+        "reel_count": "125"
+      },
+      {
+        "range": "35-45",
+        "video_count": "110",
+        "carousal_count": "120",
+        "image_count": "130",
+        "reel_count": "128"
+      },
+      {
+        "range": "45-55",
+        "video_count": "170",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "120"
+      },
+      {
+        "range": "55-65",
+        "video_count": "210",
+        "carousal_count": "250",
+        "image_count": "214",
+        "reel_count": "200"
+      }
+    ],
+    "shares": [
+      {
+        "range": "15-25",
+        "video_count": "120",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "12"
+      },
+      {
+        "range": "25-35",
+        "video_count": "10",
+        "carousal_count": "120",
+        "image_count": "180",
+        "reel_count": "125"
+      },
+      {
+        "range": "35-45",
+        "video_count": "110",
+        "carousal_count": "120",
+        "image_count": "130",
+        "reel_count": "128"
+      },
+      {
+        "range": "45-55",
+        "video_count": "170",
+        "carousal_count": "110",
+        "image_count": "150",
+        "reel_count": "120"
+      },
+      {
+        "range": "55-65",
+        "video_count": "210",
+        "carousal_count": "250",
+        "image_count": "214",
+        "reel_count": "200"
+      }
+    ]
+  },
+  "location": {
+    "posts": {
+      "reel": {
+        "Sweden": 14.58,
+        "Japan": 8.75,
+        "Russia": 8.75,
+        "South Korea": 7.92,
+        "South Africa": 7.08,
+        "France": 6.67,
+        "United States": 6.25,
+        "Turkey": 5.83,
+        "Australia": 4.58,
+        "Canada": 4.58,
+        "Others": 25.0
+      },
+      "video": {
+        "Japan": 10.98,
+        "South Korea": 10.57,
+        "Russia": 9.35,
+        "Sweden": 8.13,
+        "Switzerland": 6.1,
+        "France": 6.1,
+        "South Africa": 6.1,
+        "Australia": 6.1,
+        "Italy": 5.28,
+        "Canada": 5.28,
+        "Others": 26.02
+      },
+      "carousal": {
+        "Sweden": 10.42,
+        "South Korea": 10.0,
+        "Japan": 9.58,
+        "United States": 9.17,
+        "Russia": 8.75,
+        "South Africa": 6.67,
+        "Australia": 6.67,
+        "China": 6.25,
+        "Egypt": 5.83,
+        "France": 5.83,
+        "Others": 20.83
+      },
+      "image": {
+        "South Korea": 11.68,
+        "Sweden": 10.58,
+        "Russia": 10.22,
+        "Japan": 10.22,
+        "United States": 8.76,
+        "Australia": 6.57,
+        "Turkey": 6.57,
+        "France": 5.11,
+        "United Arab Emirates": 4.38,
+        "South Africa": 4.38,
+        "Others": 21.53
       }
     },
-   "day_and_time": {
+    "impressions": {
+      "reel": {
+        "Russia": 10.47,
+        "South Korea": 10.0,
+        "Japan": 9.84,
+        "Sweden": 9.8,
+        "South Africa": 6.67,
+        "France": 6.65,
+        "United States": 6.53,
+        "Australia": 6.53,
+        "Canada": 3.56,
+        "Turkey": 3.46,
+        "Others": 26.48
+      },
+      "video": {
+        "Russia": 10.45,
+        "Sweden": 10.23,
+        "Japan": 10.06,
+        "South Korea": 9.98,
+        "United States": 6.85,
+        "Australia": 6.71,
+        "South Africa": 6.52,
+        "France": 6.18,
+        "Egypt": 3.56,
+        "Canada": 3.54,
+        "Others": 25.91
+      },
+      "carousal": {
+        "Russia": 10.36,
+        "Sweden": 9.9,
+        "South Korea": 9.87,
+        "Japan": 9.75,
+        "United States": 6.71,
+        "Australia": 6.69,
+        "South Africa": 6.57,
+        "France": 6.57,
+        "Italy": 3.51,
+        "Turkey": 3.47,
+        "Others": 26.6
+      },
+      "image": {
+        "South Korea": 10.17,
+        "Japan": 10.13,
+        "Sweden": 9.96,
+        "Russia": 9.77,
+        "South Africa": 6.85,
+        "France": 6.76,
+        "Australia": 6.6,
+        "United States": 6.29,
+        "Turkey": 3.48,
+        "Egypt": 3.46,
+        "Others": 26.54
+      }
+    },
+    "likes": {
+      "reel": {
+        "South Korea": 10.31,
+        "Japan": 10.03,
+        "Russia": 9.84,
+        "Sweden": 9.62,
+        "Australia": 7.17,
+        "France": 7.0,
+        "United States": 6.84,
+        "South Africa": 6.31,
+        "Canada": 3.59,
+        "Egypt": 3.5,
+        "Others": 25.79
+      },
+      "video": {
+        "Russia": 10.7,
+        "Sweden": 10.4,
+        "Japan": 9.64,
+        "South Korea": 9.51,
+        "South Africa": 6.78,
+        "United States": 6.7,
+        "Australia": 6.4,
+        "France": 6.35,
+        "Turkey": 3.73,
+        "Italy": 3.67,
+        "Others": 26.12
+      },
+      "carousal": {
+        "Sweden": 10.39,
+        "Russia": 9.86,
+        "Japan": 9.81,
+        "South Korea": 9.67,
+        "South Africa": 6.97,
+        "Australia": 6.81,
+        "United States": 6.45,
+        "France": 6.39,
+        "United Arab Emirates": 3.64,
+        "Thailand": 3.58,
+        "Others": 26.43
+      },
+      "image": {
+        "Sweden": 10.67,
+        "Russia": 10.28,
+        "Japan": 10.18,
+        "South Korea": 9.72,
+        "Australia": 7.22,
+        "France": 6.73,
+        "United States": 6.46,
+        "South Africa": 6.44,
+        "India": 3.55,
+        "Thailand": 3.4,
+        "Others": 25.35
+      }
+    },
+    "comments": {
+      "reel": {
+        "Japan": 10.99,
+        "Russia": 10.33,
+        "Sweden": 10.09,
+        "South Korea": 9.16,
+        "South Africa": 7.01,
+        "United States": 6.77,
+        "Australia": 6.36,
+        "France": 6.01,
+        "Turkey": 3.56,
+        "Argentina": 3.52,
+        "Others": 26.19
+      },
+      "video": {
+        "Japan": 9.9,
+        "South Korea": 9.83,
+        "Sweden": 9.8,
+        "Russia": 8.53,
+        "France": 6.94,
+        "United States": 6.88,
+        "South Africa": 6.7,
+        "Australia": 6.43,
+        "Switzerland": 3.85,
+        "Thailand": 3.78,
+        "Others": 27.36
+      },
+      "carousal": {
+        "Sweden": 10.54,
+        "South Korea": 10.37,
+        "Japan": 10.01,
+        "Russia": 9.45,
+        "United States": 7.05,
+        "Australia": 6.98,
+        "South Africa": 6.84,
+        "France": 6.42,
+        "China": 3.53,
+        "Turkey": 3.39,
+        "Others": 25.42
+      },
+      "image": {
+        "Sweden": 10.32,
+        "South Korea": 10.08,
+        "Russia": 9.84,
+        "Japan": 9.81,
+        "France": 7.15,
+        "South Africa": 7.09,
+        "Australia": 6.76,
+        "United States": 6.37,
+        "Italy": 3.86,
+        "Thailand": 3.47,
+        "Others": 25.25
+      }
+    },
+    "shares": {
+      "reel": {
+        "South Korea": 10.38,
+        "Sweden": 10.22,
+        "Russia": 9.62,
+        "Japan": 9.29,
+        "France": 7.75,
+        "South Africa": 6.59,
+        "United States": 6.32,
+        "Australia": 6.32,
+        "Canada": 3.68,
+        "China": 3.57,
+        "Others": 26.26
+      },
+      "video": {
+        "Sweden": 10.69,
+        "Japan": 10.47,
+        "South Korea": 9.39,
+        "Russia": 8.79,
+        "Australia": 7.0,
+        "United States": 6.51,
+        "France": 6.08,
+        "South Africa": 5.86,
+        "India": 3.85,
+        "United Arab Emirates": 3.74,
+        "Others": 27.62
+      },
+      "carousal": {
+        "Russia": 10.95,
+        "South Korea": 10.34,
+        "Sweden": 10.28,
+        "Japan": 10.28,
+        "France": 6.98,
+        "South Africa": 6.31,
+        "Australia": 5.98,
+        "United States": 5.75,
+        "Thailand": 3.85,
+        "Argentina": 3.63,
+        "Others": 25.64
+      },
+      "image": {
+        "Russia": 11.51,
+        "Japan": 9.82,
+        "South Korea": 9.35,
+        "Sweden": 8.79,
+        "France": 7.19,
+        "Australia": 6.86,
+        "South Africa": 6.63,
+        "United States": 6.3,
+        "Turkey": 4.18,
+        "Canada": 3.81,
+        "Others": 25.56
+      }
+    }
+  },
+  "day_and_time": {
     "posts": {
-      "carousal": [
+      "":[
         {
           "type_of_day": "Weekday",
-          "morning": 1,
-          "afternoon": 40,
-          "evening": 1,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         },
         {
           "type_of_day": "Weekend",
-          "morning": 25,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         }
       ],
-      "video": [
+      "Morning": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 12,
+          "video": 35,
+          "reel": 18,
+          "image": 22
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 9,
+          "video": 42,
+          "reel": 15,
+          "image": 19
         }
       ],
-      "reel": [
+      "After Noon": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 8,
+          "video": 30,
+          "reel": 21,
+          "image": 25
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 10,
+          "video": 28,
+          "reel": 14,
+          "image": 20
         }
       ],
-      "image": [
+      "Evening": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 15,
+          "video": 50,
+          "reel": 17,
+          "image": 30
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 11,
+          "video": 45,
+          "reel": 12,
+          "image": 28
+        }
+      ],
+      "Night": [
+        {
+          "type_of_day": "Weekday",
+          "carousel": 14,
+          "video": 40,
+          "reel": 10,
+          "image": 18
+        },
+        {
+          "type_of_day": "Weekend",
+          "carousel": 7,
+          "video": 38,
+          "reel": 16,
+          "image": 22
         }
       ]
     },
     "impressions": {
-      "carousal": [
+      "":[
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         }
       ],
-      "video": [
+      "Morning": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 20,
+          "video": 48,
+          "reel": 12,
+          "image": 24
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 18,
+          "video": 40,
+          "reel": 9,
+          "image": 17
         }
       ],
-      "reel": [
+      "After Noon": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 13,
+          "video": 33,
+          "reel": 20,
+          "image": 21
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 11,
+          "video": 39,
+          "reel": 18,
+          "image": 19
         }
       ],
-      "image": [
+      "Evening": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 17,
+          "video": 46,
+          "reel": 15,
+          "image": 28
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 14,
+          "video": 42,
+          "reel": 13,
+          "image": 23
+        }
+      ],
+      "Night": [
+        {
+          "type_of_day": "Weekday",
+          "carousel": 19,
+          "video": 49,
+          "reel": 11,
+          "image": 25
+        },
+        {
+          "type_of_day": "Weekend",
+          "carousel": 16,
+          "video": 37,
+          "reel": 10,
+          "image": 20
         }
       ]
     },
     "likes": {
-      "carousal": [
+      "":[
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         }
       ],
-      "video": [
+      "Morning": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 10,
+          "video": 25,
+          "reel": 8,
+          "image": 14
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 7,
+          "video": 28,
+          "reel": 12,
+          "image": 18
         }
       ],
-      "reel": [
+      "After Noon": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 9,
+          "video": 23,
+          "reel": 6,
+          "image": 19
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 8,
+          "video": 22,
+          "reel": 7,
+          "image": 16
         }
       ],
-      "image": [
+      "Evening": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 12,
+          "video": 30,
+          "reel": 10,
+          "image": 20
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 10,
+          "video": 26,
+          "reel": 8,
+          "image": 22
+        }
+      ],
+      "Night": [
+        {
+          "type_of_day": "Weekday",
+          "carousel": 11,
+          "video": 29,
+          "reel": 9,
+          "image": 21
+        },
+        {
+          "type_of_day": "Weekend",
+          "carousel": 9,
+          "video": 25,
+          "reel": 7,
+          "image": 19
         }
       ]
     },
     "comments": {
-      "carousal": [
+      "":[
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         }
       ],
-      "video": [
+      "Morning": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 14,
+          "video": 38,
+          "reel": 12,
+          "image": 22
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 11,
+          "video": 42,
+          "reel": 9,
+          "image": 20
         }
       ],
-      "reel": [
+      "After Noon": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 15,
+          "video": 37,
+          "reel": 10,
+          "image": 24
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 13,
+          "video": 35,
+          "reel": 8,
+          "image": 21
         }
       ],
-      "image": [
+      "Evening": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 18,
+          "video": 41,
+          "reel": 13,
+          "image": 26
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 16,
+          "video": 39,
+          "reel": 10,
+          "image": 23
+        }
+      ],
+      "Night": [
+        {
+          "type_of_day": "Weekday",
+          "carousel": 17,
+          "video": 40,
+          "reel": 11,
+          "image": 25
+        },
+        {
+          "type_of_day": "Weekend",
+          "carousel": 14,
+          "video": 37,
+          "reel": 8,
+          "image": 22
         }
       ]
     },
     "shares": {
-      "carousal": [
+      "":[
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 0,
+          "video": 0,
+          "reel": 0,
+          "image": 0
         }
       ],
-      "video": [
+      "Morning": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 9,
+          "video": 24,
+          "reel": 6,
+          "image": 15
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 8,
+          "video": 26,
+          "reel": 8,
+          "image": 18
         }
       ],
-      "reel": [
+      "After Noon": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 10,
+          "video": 23,
+          "reel": 9,
+          "image": 17
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 12,
+          "video": 27,
+          "reel": 7,
+          "image": 19
         }
       ],
-      "image": [
+      "Evening": [
         {
           "type_of_day": "Weekday",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 13,
+          "video": 31,
+          "reel": 11,
+          "image": 22
         },
         {
           "type_of_day": "Weekend",
-          "morning": 12,
-          "afternoon": 13,
-          "evening": 14,
-          "night": 15
+          "carousel": 11,
+          "video": 29,
+          "reel": 10,
+          "image": 20
+        }
+      ],
+      "Night": [
+        {
+          "type_of_day": "Weekday",
+          "carousel": 14,
+          "video": 32,
+          "reel": 12,
+          "image": 24
+        },
+        {
+          "type_of_day": "Weekend",
+          "carousel": 12,
+          "video": 28,
+          "reel": 9,
+          "image": 21
         }
       ]
     }
   },
-    "type": {
-      "posts": {
-        "carousal": 12,
-        "video": 12,
-        "reel": 23,
-        "image": 14
-      },
-      "impressions": {
-        "carousal": 12,
-        "video": 12,
-        "reel": 23,
-        "image": 14
-      },
-      "likes": {
-        "carousal": 12,
-        "video": 12,
-        "reel": 23,
-        "image": 14
-      },
-      "comments": {
-        "carousal": 12,
-        "video": 12,
-        "reel": 23,
-        "image": 14
-      },
-      "shares": {
-        "carousal": 12,
-        "video": 12,
-        "reel": 23,
-        "image": 14
-      }
+  "type": {
+    "posts": {
+      "carousal": 12,
+      "video": 12,
+      "reel": 23,
+      "image": 14
+    },
+    "impressions": {
+      "carousal": 12,
+      "video": 12,
+      "reel": 23,
+      "image": 14
+    },
+    "likes": {
+      "carousal": 12,
+      "video": 12,
+      "reel": 23,
+      "image": 14
+    },
+    "comments": {
+      "carousal": 12,
+      "video": 12,
+      "reel": 23,
+      "image": 14
+    },
+    "shares": {
+      "carousal": 12,
+      "video": 12,
+      "reel": 23,
+      "image": 14
     }
   }
-  
+}

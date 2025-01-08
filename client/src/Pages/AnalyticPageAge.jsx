@@ -86,6 +86,7 @@ function AnalyticPageAge() {
   const sharesData = createChartData('shares');
   const commentsData = createChartData('comments');
 
+
   const options = {
     responsive: true,
     scales: {
@@ -95,13 +96,43 @@ function AnalyticPageAge() {
         title: {
           display: true,
           text: 'Age Range',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+          padding: {
+             top: 20,
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
       y: {
         stacked: true,
         title: {
           display: true,
-          text: 'Count',
+          text: 'Frequency',
+          font: {
+            size: 16,
+            weight: 'bold',
+            family: 'Arial',
+          },
+          padding: {
+             bottom: 20,
+          },
+        },
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial',
+          },
         },
       },
     },
