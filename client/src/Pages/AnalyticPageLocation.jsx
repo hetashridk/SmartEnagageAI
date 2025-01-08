@@ -224,12 +224,15 @@ function AnalyticPageLocation() {
       tooltip: {
         enabled: true,
         callbacks: {
+          title: function (tooltipItems) {
+            return tooltipItems[0].dataset.label;
+          },
           label: function (tooltipItem) {
             const data = tooltipItem.dataset.data;
             const total = data.reduce((acc, value) => acc + value, 0);
             const currentValue = data[tooltipItem.dataIndex];
             const percentage = ((currentValue / total) * 100).toFixed(2);
-            return `${tooltipItem.dataset.label}: ${percentage}%`;
+            return `${tooltipItem.label}: ${percentage}%`;
           },
         },
       },
