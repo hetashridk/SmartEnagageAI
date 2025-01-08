@@ -71,25 +71,37 @@ app.post('/api/data', async (req, res) => {
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: data.error || 'Failed to process request' });
+      return res.status(response.status).json({ error: result.error || 'Failed to process request' });
     }
 
-    res.json(data);
+    const message = result?.outputs?.[0]?.outputs?.[0]?.artifacts?.message;
+
+    if (message) {
+      try {
+        const parsedMessage = JSON.parse(message);
+        return res.json(parsedMessage);
+      } catch (parseError) {
+        console.error('Failed to parse message:', parseError);
+        console.error('Failed to parse message:', message);
+        return res.status(500).json({ error: 'Invalid response format' });
+      }
+    }
+
+    res.status(500).json({ error: 'Unexpected response structure' });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
 // Export as a serverless function
 export default app;
 
-// if (!process.env.IS_SERVERLESS) {
+if (!process.env.IS_SERVERLESS) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-// }
+}

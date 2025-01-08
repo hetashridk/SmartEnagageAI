@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
-import sampleData from '../utils/SampleData.json';
 import ChartSwitcherGroupedBar from '../Components/ChartSwitcherGroupedBar';
 import Chatbot from '../Components/Chatbot';
 
@@ -10,376 +9,91 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 function AnalyticPageDay() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
-  
-    const toggleSidebar = () => {
-      setIsSidebarOpen(!isSidebarOpen);
-    };
-  
-    const toggleMinimize = () => {
-      setIsSidebarMinimized(!isSidebarMinimized);
-    };
-  
-  const labelsPosts = Object.keys(sampleData.day_and_time.posts);
-  const labelsImpressions = Object.keys(sampleData.day_and_time.impressions);
-  const labelsLikes = Object.keys(sampleData.day_and_time.likes);
-  const labelsComments = Object.keys(sampleData.day_and_time.comments);
-  const labelsShares = Object.keys(sampleData.day_and_time.shares);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [data, setData] = useState(null);
 
-  const weekdayDataPosts = {
-    labels: labelsPosts,
+  useEffect(() => {
+    fetch('/api/data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ param: 'day' }),
+    })
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
+
+
+
+  const { day_and_time } = data;
+
+  const generateDataset = (data, labels) => ({
+    labels,
     datasets: [
       {
         label: 'Morning',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][0].morning),
+        data: labels.map(label => data[label][0].morning),
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
       },
       {
         label: 'Afternoon',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][0].afternoon),
+        data: labels.map(label => data[label][0].afternoon),
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
       {
         label: 'Evening',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][0].evening),
+        data: labels.map(label => data[label][0].evening),
         backgroundColor: 'rgba(255, 206, 86, 0.2)',
         borderColor: 'rgba(255, 206, 86, 1)',
         borderWidth: 1,
       },
       {
         label: 'Night',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][0].night),
+        data: labels.map(label => data[label][0].night),
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
-  };
+  });
 
-  const weekendDataPosts = {
-    labels: labelsPosts,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][1].morning),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][1].afternoon),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][1].evening),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsPosts.map(label => sampleData.day_and_time.posts[label][1].night),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
+  const labelsPosts = Object.keys(day_and_time.posts);
+  const labelsImpressions = Object.keys(day_and_time.impressions);
+  const labelsLikes = Object.keys(day_and_time.likes);
+  const labelsComments = Object.keys(day_and_time.comments);
+  const labelsShares = Object.keys(day_and_time.shares);
 
-
-
-  const weekdayDataImpressions = {
-    labels: labelsImpressions,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][0].morning),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][0].afternoon),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][0].evening),
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][0].night),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataImpressions = {
-    labels: labelsImpressions,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][1].morning),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][1].afternoon),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][1].evening),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsImpressions.map(label => sampleData.day_and_time.impressions[label][1].night),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-
-
-  const weekdayDataLikes = {
-    labels: labelsLikes,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][0].morning),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][0].afternoon),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][0].evening),
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][0].night),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataLikes = {
-    labels: labelsLikes,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][1].morning),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][1].afternoon),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][1].evening),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsLikes.map(label => sampleData.day_and_time.likes[label][1].night),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-
-
-  const weekdayDataComments = {
-    labels: labelsComments,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][0].morning),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][0].afternoon),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][0].evening),
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][0].night),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataComments = {
-    labels: labelsComments,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][1].morning),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][1].afternoon),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][1].evening),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsComments.map(label => sampleData.day_and_time.comments[label][1].night),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-
-
-  const weekdayDataShares = {
-    labels: labelsShares,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][0].morning),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][0].afternoon),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][0].evening),
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][0].night),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const weekendDataShares = {
-    labels: labelsShares,
-    datasets: [
-      {
-        label: 'Morning',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][1].morning),
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Afternoon',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][1].afternoon),
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Evening',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][1].evening),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Night',
-        data: labelsShares.map(label => sampleData.day_and_time.shares[label][1].night),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
+  const weekdayDataPosts = generateDataset(day_and_time.posts, labelsPosts);
+  const weekendDataPosts = generateDataset(day_and_time.posts, labelsPosts);
+  const weekdayDataImpressions = generateDataset(day_and_time.impressions, labelsImpressions);
+  const weekendDataImpressions = generateDataset(day_and_time.impressions, labelsImpressions);
+  const weekdayDataLikes = generateDataset(day_and_time.likes, labelsLikes);
+  const weekendDataLikes = generateDataset(day_and_time.likes, labelsLikes);
+  const weekdayDataComments = generateDataset(day_and_time.comments, labelsComments);
+  const weekendDataComments = generateDataset(day_and_time.comments, labelsComments);
+  const weekdayDataShares = generateDataset(day_and_time.shares, labelsShares);
+  const weekendDataShares = generateDataset(day_and_time.shares, labelsShares);
 
   const options = {
     responsive: true,
     scales: {
       x: {
         stacked: true,
-        barThickness: 50, // Adjust this value to control the thickness of the bars
+        barThickness: 50,
         title: {
           display: true,
           text: 'Type of Post',
@@ -413,14 +127,14 @@ function AnalyticPageDay() {
         </div>
         <div>
           <h3 className='text-xl font-bold text-gray-800 mb-4'>Weekend</h3>
-          <ChartSwitcherGroupedBar
+          {!data ? <Spinner /> :<ChartSwitcherGroupedBar
             postsData={weekendDataPosts}
             impressionsData={weekendDataImpressions}
             likesData={weekendDataLikes}
             commentsData={weekendDataComments}
             sharesData={weekendDataShares}
             options={options}
-          />
+          />}
         </div>
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
