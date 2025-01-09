@@ -1,3 +1,5 @@
+// Chatbot.js - Updated to fix chat history storage
+
 import React, { useState } from 'react';
 import { FaCommentDots, FaTimes } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
@@ -16,8 +18,12 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
     e.preventDefault();
     if (!userInput.trim()) return;
 
+    const currentInput = userInput;
+    setUserInput('');
+    setChatHistory((prevHistory) => [...prevHistory, { sender: 'user', message: currentInput }]);
+
     const payload = {
-      input_value: `"${userInput}" answer in shortest possible way.in around single line.no markdown.`,
+      input_value: `${currentInput} answer in shortest possible way.in around single line.no markdown.`,
       output_type: "chat",
       input_type: "chat",
       tweaks: {
@@ -28,8 +34,6 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
     };
 
     setLoading(true);
-    setChatHistory([...chatHistory, { sender: 'user', message: userInput }]);
-    setUserInput('');
 
     try {
       const response = await fetch('/api/run', {
@@ -43,19 +47,18 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setChatHistory([
-          ...chatHistory,
+        setChatHistory((prevHistory) => [
+          ...prevHistory,
           { sender: 'bot', message: data.outputs[0].outputs[0].artifacts.message },
         ]);
         setErrorMessage('');
       } else {
         setErrorMessage('Failed to submit data.');
       }
-      setLoading(false);
-
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An error occurred. Please try again later.');
+    } finally {
       setLoading(false);
     }
   };
@@ -69,8 +72,7 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
         <FaCommentDots size={24} />
       </button>
       <div
-        className={`fixed top-0 right-0 w-[30%] h-screen bg-[#7144F1] shadow-lg p-4 transition-transform duration-300 flex flex-col ${isOpen ? 'transform translate-x-0' : 'transform translate-x-full'
-          }`}
+        className={`fixed top-0 right-0 w-[30%] h-screen bg-[#7144F1] shadow-lg p-4 transition-transform duration-300 flex flex-col ${isOpen ? 'transform translate-x-0' : 'transform translate-x-full'}`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-white">Chatbot</h2>
@@ -80,13 +82,11 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {/* Chatbot content goes here */}
           {chatHistory.length === 0 ? (
             <div className="text-center text-gray-400">Start the conversation by typing a message!</div>
           ) : (
             chatHistory.map((chat, index) => (
               <div key={index} className="chat-message">
-                {/* Display user query */}
                 {chat.sender === 'user' && (
                   <div className="flex justify-end mb-2">
                     <div className="inline-block p-3 rounded-lg bg-blue-100 text-blue-700 max-w-[75%] break-words">
@@ -94,7 +94,6 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
                     </div>
                   </div>
                 )}
-                {/* Display bot's response */}
                 {chat.sender === 'bot' && (
                   <div className="flex justify-start mb-2">
                     <div className="inline-block p-3 rounded-lg bg-gray-100 text-gray-700 max-w-[75%] break-words">
@@ -110,10 +109,6 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
         {loading && (
           <div className="text-center text-gray-300">Bot is typing...</div>
         )}
-
-        {/* {errorMessage && (
-          <div className="text-center text-red-500 mt-2">{errorMessage}</div>
-        )} */}
 
         <form onSubmit={handleSubmit} className="flex items-center mt-4">
           <input
