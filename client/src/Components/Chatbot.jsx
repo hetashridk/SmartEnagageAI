@@ -1,10 +1,8 @@
-// Chatbot.js - Updated to fix chat history storage
-
 import React, { useState } from 'react';
 import { FaCommentDots, FaTimes } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 
-const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
+const Chatbot = ({ toggleSidebar = () => {}, setLoading = () => {}, setErrorMessage = () => {}, loading = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
