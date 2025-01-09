@@ -17,6 +17,9 @@ function InputPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [showDetails, setShowDetails] = useState({ insights: false, comparativeInsights: false, suggestions: false });
+
+  const toggleSection = (section) => setShowDetails(prev => ({ ...prev, [section]: !prev[section] }));
 
   const toggleMinimize = () => setIsSidebarMinimized(!isSidebarMinimized);
 
@@ -35,19 +38,26 @@ function InputPage() {
   }, []);
 
   const parseMessage = (message) => {
-    const parsedSections = { insights: [], comparativeInsights: [], suggestions: [] };
+    const parsedSections = {
+      insights: [],
+      comparativeInsights: [],
+      suggestions: []
+    };
     if (!message) return parsedSections;
-
-    const sections = message.split('\n\n');
-    let currentSection = '';
-
-    sections.forEach(section => {
-      if (section.startsWith('### Insights:')) currentSection = 'insights';
-      else if (section.startsWith('### Comparative Insights:')) currentSection = 'comparativeInsights';
-      else if (section.startsWith('### Suggestions:')) currentSection = 'suggestions';
-
-      if (currentSection) parsedSections[currentSection].push(section.replace(/^### .+: /, '').trim());
+  
+    const regexPatterns = {
+      insights: /#### 1\.\s\*\*Post Overview\*\*(.*?)(?=#### 2|$)/s,
+      comparativeInsights: /#### 4\.\s\*\*Comparative Insights\*\*(.*?)(?=#### 5|$)/s,
+      suggestions: /#### 5\.\s\*\*Suggestions\*\*(.*?)(?=$)/s
+    };
+  
+    Object.keys(regexPatterns).forEach(section => {
+      const match = message.match(regexPatterns[section]);
+      if (match && match[1]) {
+        parsedSections[section] = match[1].trim().split('\n').filter(line => line.trim().length > 0);
+      }
     });
+  
     return parsedSections;
   };
 
@@ -80,25 +90,37 @@ function InputPage() {
 
   return (
     <div className='flex'>
-      <div className={`bg-[#7144F1] p-8 ${isSidebarMinimized ? 'w-20' : 'w-1/4'} transition-all duration-300`}>
-        <div className={`${isSidebarMinimized ? 'items-center' : 'justify-between'} flex`}>
-          <Link to='/'><img src={Logo} alt="logo" className={`${isSidebarMinimized ? 'w-5 h-5' : 'w-8 h-8'}`} /></Link>
-          <Link to='/analytic/age'><img src={arrow} alt="back" className={`${isSidebarMinimized ? 'w-5 h-5' : 'ml-64 w-8 h-8'}`} /></Link>
+      <div className={`bg-[#7144F1] p-8 transition-all duration-300 ${isSidebarMinimized ? 'w-20' : 'w-[25%]'} ${!message ? 'h-screen' : 'h-auto'}`}>
+        <div className={`${isSidebarMinimized ? 'flex flex-col space-y-5 justify-center items-center' : 'flex justify-between items-center'}`}>
+          <Link to='/'>
+            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px]'}`}>
+              <img src={Logo} alt="logo" />
+            </div>
+          </Link>
+          <Link to='/analytic/age'>
+            <div className={`${isSidebarMinimized ? 'w-[20px] h-[20px]' : 'w-[31px] h-[31px] ml-[250px] flex'}`}>
+              <img src={arrow} alt="back" />
+            </div>
+          </Link>
         </div>
-        <div className={`${isSidebarMinimized ? 'hidden' : 'mt-10 text-white syne text-4xl'}`}>Stay on top of Posting</div>
-        {!isSidebarMinimized && <img src={CalenderImg} alt="calendar" className='mt-14' />}
+        <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
+          <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
+        </div>
+        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block mt-14'}`}>
+          <img src={CalenderImg} alt="calendar" />
+        </div>
       </div>
 
-      <div className='flex flex-col justify-center items-center w-3/4 space-y-8'>
-        <h1 className='text-4xl font-bold text-[#212121]'>Post Analytic Form</h1>
+      <div className='flex flex-col justify-center items-center w-[75%] space-y-8'>
+        <p className='outfit text-[#212121] font-bold text-[35px]'>Post Analytic Form</p>
         <form onSubmit={handleSubmit}>
-          <label className="block font-semibold text-[#444B59]">When do you plan for posting?</label>
+          <label className="block nunito text-[#444B59] font-semibold">When do you plan for posting?</label>
           <div className='flex space-x-4 mt-2'>
-            <select value={dayType} onChange={e => setDayType(e.target.value)} className="p-2 border rounded-md">
+            <select value={dayType} onChange={e => setDayType(e.target.value)} className="block w-32 p-2 border border-gray-300 rounded-md">
               <option value="weekday">Weekday</option>
               <option value="weekend">Weekend</option>
             </select>
-            <select value={timeSlot} onChange={e => setTimeSlot(e.target.value)} className="p-2 border rounded-md">
+            <select value={timeSlot} onChange={e => setTimeSlot(e.target.value)} className="block w-[235px] p-2 border border-gray-300 rounded-md">
               <option value="12AM to 6AM (Night)">12AM to 6AM (Night)</option>
               <option value="6AM to 12PM (Morning)">6AM to 12PM (Morning)</option>
               <option value="12PM to 6PM (Afternoon)">12PM to 6PM (Afternoon)</option>
@@ -106,8 +128,8 @@ function InputPage() {
             </select>
           </div>
           <div className='mt-4'>
-            <label className="block font-semibold text-[#444B59]">Content Type</label>
-            <select value={contentType} onChange={e => setContentType(e.target.value)} className="p-2 border rounded-md">
+            <label className="block nunito text-[#444B59] font-semibold">Content Type</label>
+            <select value={contentType} onChange={e => setContentType(e.target.value)} className="block w-96 p-2 border border-gray-300 rounded-md mt-2">
               <option value="Carousal">Carousal</option>
               <option value="Image">Image</option>
               <option value="Video">Video</option>
@@ -126,81 +148,68 @@ function InputPage() {
         </form>
 
         {message && (
-          <div className='space-y-4 mt-4'>
-            {/* Insights Section */}
-            <div className="bg-blue-100 p-6 rounded-lg">
-              <h3 className="font-bold text-xl text-blue-800">Insights</h3>
-              <div className="text-gray-700">
-                <p><strong>Post Overview</strong></p>
-                <ul>
-                  <li><strong>Total Posts:</strong> There are <strong>1727</strong> Carousal posts made on weekdays during the night.</li>
-                  <li><strong>Type of Record:</strong> All records are of type 'POST'.</li>
+          <div className="space-y-4 mt-4 w-[780px] p-4 border rounded-lg shadow-lg">
+            <div className="bg-blue-100 text-blue-700 rounded-md">
+              <button onClick={() => toggleSection('insights')} className="font-bold text-left w-full">
+                {showDetails.insights ? '▲' : '▼'} Insights
+              </button>
+              {showDetails.insights && (
+                <ul className="pl-5 list-disc">
+                  {parsedMessage.insights.map((insight, index) => (
+                    <li key={index} className="mt-2">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
+                    </li>
+                  ))}
                 </ul>
-                <p><strong>User Age Insights</strong></p>
-                <ul>
-                  <li><strong>Mean Age:</strong> Approximately <strong>39.34 years</strong></li>
-                  <li><strong>Age Range:</strong> From <strong>15 years</strong> to <strong>63 years</strong></li>
-                  <li><strong>Age Quartiles:</strong></li>
-                  <ul>
-                    <li><strong>25th Percentile:</strong> <strong>28 years</strong></li>
-                    <li><strong>50th Percentile (Median):</strong> <strong>40 years</strong></li>
-                    <li><strong>75th Percentile:</strong> <strong>50 years</strong></li>
-                  </ul>
-                  <li><strong>Standard Deviation:</strong> <strong>13.32 years</strong>, indicating a moderate spread in user ages.</li>
-                </ul>
-                <p><strong>User Location Insights</strong></p>
-                <ul>
-                  <li><strong>Top Locations:</strong></li>
-                  <ul>
-                    <li><strong>Russia:</strong> 189 posts</li>
-                    <li><strong>South Korea:</strong> 181 posts</li>
-                    <li><strong>Japan:</strong> 169 posts</li>
-                    <li><strong>Sweden:</strong> 153 posts</li>
-                    <li><strong>South Africa:</strong> 123 posts</li>
-                    <li><strong>Australia:</strong> 118 posts</li>
-                    <li><strong>France:</strong> 117 posts</li>
-                    <li><strong>United States:</strong> 106 posts</li>
-                    <li><strong>China:</strong> 71 posts</li>
-                    <li><strong>Argentina:</strong> 64 posts</li>
-                  </ul>
-                </ul>
-              </div>
+              )}
             </div>
 
-            {/* Comparative Insights Section */}
-            <div className="bg-yellow-100 p-6 rounded-lg">
-              <h3 className="font-bold text-xl text-yellow-800">Comparative Insights</h3>
-              <div className="text-gray-700">
-                <p>- The average age of users engaging with Carousal posts during the night is relatively mature, suggesting that this content may appeal more to an adult audience.</p>
-                <p>- The geographical distribution indicates a strong presence in Russia and South Korea, which could be targeted for localized content or marketing strategies.</p>
-              </div>
+            <div className="bg-yellow-100 text-yellow-700 rounded-md">
+              <button onClick={() => toggleSection('comparativeInsights')} className="font-bold text-left w-full">
+                {showDetails.comparativeInsights ? '▲' : '▼'} Comparative Insights
+              </button>
+              {showDetails.comparativeInsights && (
+                <ul className="pl-5">
+                  {parsedMessage.comparativeInsights.map((insight, index) => (
+                    <li key={index} className="mt-2">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-            {/* Suggestions Section */}
-            <div className="bg-green-100 p-6 rounded-lg">
-              <h3 className="font-bold text-xl text-green-800">Suggestions</h3>
-              <div className="text-gray-700">
-                <p><strong>Targeted Content:</strong> Given the age distribution, consider creating content that resonates with a mature audience, possibly focusing on themes relevant to users aged 30-50.</p>
-                <p><strong>Geographic Focus:</strong> Since the majority of users are from Russia and South Korea, consider tailoring posts or advertisements to these regions, possibly in their native languages or cultural contexts.</p>
-                <p><strong>Engagement Strategies:</strong> Explore engagement strategies that cater to the night-time audience, such as interactive posts or live sessions that align with their viewing habits.</p>
-                <p><strong>Time Optimization:</strong> Analyze the engagement metrics further to determine if specific times within the night yield higher interactions, allowing for optimized posting schedules.</p>
-              </div>
+            <div className="bg-green-100 text-green-700 rounded-md">
+              <button onClick={() => toggleSection('suggestions')} className="font-bold text-left w-full">
+                {showDetails.suggestions ? '▲' : '▼'} Suggestions
+              </button>
+              {showDetails.suggestions && (
+                <ul className="pl-5">
+                  {parsedMessage.suggestions.map((suggestion, index) => (
+                    <li key={index} className="mt-2">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{suggestion}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         )}
 
         {errorMessage && (
-          <div className="bg-red-100 p-6 rounded-lg">
-            <h3 className="font-bold text-xl">Error</h3>
+          <div className="w-96 mt-4 p-6 bg-red-100 text-red-700 rounded-lg shadow-lg">
+            <h3 className="font-bold text-xl mb-2">Error:</h3>
             <p>{errorMessage}</p>
           </div>
         )}
       </div>
-      <Chatbot 
+
+      <Chatbot
         setLoading={setLoadingChatbot}
         setErrorMessage={setErrorMessage}
         toggleSidebar={toggleMinimize}
-        loading={loadingChatbot} />
+        loading={loadingChatbot}
+      />
     </div>
   );
 }
