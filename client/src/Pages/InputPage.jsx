@@ -43,12 +43,14 @@ function InputPage() {
       comparativeInsights: [],
       suggestions: []
     };
+  
     if (!message) return parsedSections;
   
+    // Modify the parsing to handle structured markers (e.g., `**Insights**`, `**Comparative Insights**`, `**Suggestions**`)
     const regexPatterns = {
-      insights: /#### 1\.\s\*\*Post Overview\*\*(.*?)(?=#### 2|$)/s,
-      comparativeInsights: /#### 4\.\s\*\*Comparative Insights\*\*(.*?)(?=#### 5|$)/s,
-      suggestions: /#### 5\.\s\*\*Suggestions\*\*(.*?)(?=$)/s
+      insights: /\*\*Insights\*\*:(.*?)(?=\*\*Comparative Insights\*\*|$)/s,
+      comparativeInsights: /\*\*Comparative Insights\*\*:(.*?)(?=\*\*Suggestions\*\*|$)/s,
+      suggestions: /\*\*Suggestions\*\*:(.*?)(?=$)/s
     };
   
     Object.keys(regexPatterns).forEach(section => {
@@ -60,12 +62,18 @@ function InputPage() {
   
     return parsedSections;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const inputValue = `Give me a detailed analysis based on insights, comparative insights, and suggestions for a ${contentType} post on a ${dayType} during the ${timeSlot}`;
+  
+    const inputValue = `Give me a detailed analysis with structured insights, comparative insights, and suggestions for a ${contentType} post on a ${dayType} during the ${timeSlot}. Please ensure the response is structured with the following sections:
+    - **Insights**: [Insights]
+    - **Comparative Insights**: [Comparative Insights]
+    - **Suggestions**: [Suggestions]`;
+  
     setLoading(true);
-
+  
     try {
       const response = await fetch('/api/run', {
         method: 'POST',
@@ -74,6 +82,7 @@ function InputPage() {
       });
       const data = await response.json();
       if (response.ok) {
+        // This assumes the response is in the format that includes 'message' directly
         setMessage(data.outputs?.[0]?.outputs?.[0]?.artifacts?.message || '');
         setErrorMessage('');
       } else {
@@ -85,6 +94,7 @@ function InputPage() {
       setLoading(false);
     }
   };
+  
 
   const parsedMessage = parseMessage(message);
 
