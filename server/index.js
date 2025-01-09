@@ -7,6 +7,7 @@ import fetch from 'node-fetch';
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT
 const BASE_URL = process.env.BASE_URL;
 const LANGFLOW_ID = process.env.LANGFLOW_ID;
 const CHAT_FLOW_ID = process.env.CHAT_FLOW_ID;
@@ -99,7 +100,7 @@ app.post('/api/data', async (req, res) => {
 // Export as a serverless function
 export default app;
 
-if (!process.env.PORT) {
+if (PORT) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
