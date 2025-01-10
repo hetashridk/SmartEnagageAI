@@ -54,7 +54,7 @@ This project is a powerful analytics module designed to analyze social media eng
 
      <div align="center">
      <img src="https://github.com/user-attachments/assets/dd2334f8-ca5c-4ee7-8ca0-b41f9dceeed0" alt="Dashboard_component" width="55%" style="margin: 5px;">
-     </div>\
+     </div>
 
 ### Frontend Workflow
 
