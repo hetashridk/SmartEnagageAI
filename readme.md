@@ -67,6 +67,10 @@ This project is a powerful analytics module designed to analyze social media eng
 4. **Interactive Chat**: 
    - Provide a GPT-driven chatbot for real-time queries and dynamic responses.
 
+     <div align="center">
+     <img src="https://github.com/user-attachments/assets/d7d388aa-4f20-42ad-b49f-69a1da2b7d24" alt="User_Input_Page" width="55%" style="margin: 5px;">
+     </div>
+
 ---
 
 ## ⚙️ Implementation Steps
@@ -94,9 +98,9 @@ This project is a powerful analytics module designed to analyze social media eng
 
 ## 🎥 Demo and Resources
 
-- 🌐 **Web Application**: [Link to the Web App](#)
-- 🎬 **YouTube Walkthrough**: [Watch the Demo](#)  
-- 👨‍💻 **FindCoder Project Link**: [Explore the Project](#)  
+- 🌐 **Web Application**: [Link to the Web App](smart-engage-ai.vercel.app)
+- 🎬 **YouTube Walkthrough**: [Watch the Demo](https://youtu.be/e9W7X-lP8B0?si=T1fR4uMclyuC1Ad7)
+- 👨‍💻 **FindCoder Project Link**: [Explore the Project](https://www.findcoder.io/projects/smartengage-ai/6780f5458015401a98ad80ef)  
 
 ---
 
