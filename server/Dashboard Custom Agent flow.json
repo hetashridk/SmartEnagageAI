@@ -1,0 +1,575 @@
+{
+  "id": "70270a56-5f0b-4164-8d1f-44422a653822",
+  "data": {
+    "nodes": [
+      {
+        "id": "TextInput-GFwm5",
+        "type": "genericNode",
+        "position": {
+          "x": 247.9668978613795,
+          "y": 140.69947208211852
+        },
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from langflow.base.io.text import TextComponent\nfrom langflow.io import MultilineInput, Output\nfrom langflow.schema.message import Message\n\n\nclass TextInputComponent(TextComponent):\n    display_name = \"Text Input\"\n    description = \"Get text inputs from the Playground.\"\n    icon = \"type\"\n    name = \"TextInput\"\n\n    inputs = [\n        MultilineInput(\n            name=\"input_value\",\n            display_name=\"Text\",\n            info=\"Text to be passed as input.\",\n        ),\n    ]\n    outputs = [\n        Output(display_name=\"Text\", name=\"text\", method=\"text_response\"),\n    ]\n\n    def text_response(self) -> Message:\n        return Message(\n            text=self.input_value,\n        )\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "input_value": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "multiline": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "input_value",
+                "value": "type",
+                "display_name": "Text",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Text to be passed as input.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MultilineInput"
+              }
+            },
+            "description": "Get text inputs from the Playground.",
+            "icon": "type",
+            "base_classes": [
+              "Message"
+            ],
+            "display_name": "Params Input",
+            "documentation": "",
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "text",
+                "display_name": "Text",
+                "method": "text_response",
+                "value": "__UNDEFINED__",
+                "cache": true
+              }
+            ],
+            "field_order": [
+              "input_value"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {},
+            "tool_mode": false,
+            "lf_version": "1.1.1"
+          },
+          "type": "TextInput",
+          "id": "TextInput-GFwm5"
+        },
+        "selected": false,
+        "width": 320,
+        "height": 233,
+        "positionAbsolute": {
+          "x": 247.9668978613795,
+          "y": 140.69947208211852
+        },
+        "dragging": false
+      },
+      {
+        "id": "CustomComponent-AiZSo",
+        "type": "genericNode",
+        "position": {
+          "x": 709.9614019661504,
+          "y": 125.6668337947217
+        },
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "path": {
+                "trace_as_metadata": true,
+                "file_path": "70270a56-5f0b-4164-8d1f-44422a653822/2025-01-09_13-15-58_all_records.csv",
+                "fileTypes": [
+                  "csv"
+                ],
+                "list": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "path",
+                "value": "",
+                "display_name": "File Path",
+                "advanced": false,
+                "input_types": [
+                  "str",
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "A CSV file to process.",
+                "title_case": false,
+                "type": "file",
+                "_input_type": "FileInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "import json\nimport pandas as pd\nimport os\nfrom langflow.custom import Component\nfrom langflow.io import MessageTextInput, Output, FileInput\nfrom langflow.schema.message import Message\n\nclass CustomComponent(Component):\n    display_name = \"Custom Component\"\n    description = \"Processes a CSV file and returns categorized data based on input value.\"\n    documentation: str = \"http://docs.langflow.org/components/custom\"\n    icon = \"code\"\n    name = \"CustomComponent\"\n\n    inputs = [\n        MessageTextInput(\n            name=\"input_value\",\n            display_name=\"Category Type\",\n            info=\"Select a category type: 'age', 'day_time', 'location', or 'type'.\",\n            value=\"age\",\n            tool_mode=True,\n        ),\n        FileInput(\n            name=\"path\",\n            display_name=\"File Path\",\n            file_types=[\"csv\"],\n            input_types=[\"str\", \"Message\"],\n            required=True,\n            info=\"A CSV file to process.\",\n        )\n    ]\n\n    outputs = [\n        Output(display_name=\"Output\", name=\"output\", method=\"build_output\"),\n    ]\n\n    post_types = [\"REEL\", \"VIDEO\", \"CAROUSAL\", \"IMAGE\"]\n    categories = [\"posts\", \"impressions\", \"likes\", \"comments\", \"shares\"]\n    age_ranges = [(15, 24), (25, 34), (35, 44), (45, 54), (55, 65)]\n    TOP_N_COUNTRIES = 7\n\n    record_mapping = {\n        \"posts\": \"POST\",\n        \"impressions\": \"POST_IMPRESSION\",\n        \"likes\": \"POST_LIKE\",\n        \"comments\": \"POST_COMMENT\",\n        \"shares\": \"POST_SHARE\"\n    }\n\n    @staticmethod\n    def calculate_percentage(count, total):\n        return round((count / total) * 100, 2) if total > 0 else 0\n\n    def categorize_age(self, age):\n        for start, end in self.age_ranges:\n            if start <= age <= end:\n                return f\"{start}-{end}\"\n        return None\n\n    def categorize_by_age(self, df, record_type):\n        aggregated_data = []\n        filtered_df = df[df['type_of_record'] == record_type]\n        for start, end in self.age_ranges:\n            range_label = f\"{start}-{end}\"\n            range_data = {\"range\": range_label}\n            range_df = filtered_df[filtered_df['age_range'] == range_label]\n            for post_type in self.post_types:\n                range_data[f\"{post_type.lower()}_count\"] = range_df[range_df['type_of_post'] == post_type].shape[0]\n            aggregated_data.append(range_data)\n        return aggregated_data\n\n    def categorize_by_day_time(self, df, record_type):\n        filtered_df = df[df['type_of_record'] == record_type]\n\n        time_periods = [\"\", \"MORNING\", \"AFTERNOON\", \"EVENING\", \"NIGHT\"]\n        result = {period: [] for period in time_periods}\n\n        for period in time_periods:\n            if period != \"\":\n                period_df = filtered_df[filtered_df['time_period_of_day'] == period]\n            else:\n                period_df = None\n\n            for type_of_day in [\"WEEKDAY\", \"WEEKEND\"]:\n                if period_df is not None:\n                    type_day_df = period_df[period_df['type_of_day'] == type_of_day]\n\n                    counts = {\n                        \"carousel\": type_day_df[type_day_df['type_of_post'] == \"CAROUSAL\"].shape[0],\n                        \"video\": type_day_df[type_day_df['type_of_post'] == \"VIDEO\"].shape[0],\n                        \"reel\": type_day_df[type_day_df['type_of_post'] == \"REEL\"].shape[0],\n                        \"image\": type_day_df[type_day_df['type_of_post'] == \"IMAGE\"].shape[0]\n                    }\n                else:\n                    counts = {\n                        \"carousel\": 0,\n                        \"video\": 0,\n                        \"reel\": 0,\n                        \"image\": 0\n                    }\n                    result[period].append({\n                        \"type_of_day\": type_of_day,\n                        **counts\n                    })\n\n        return result\n\n    def categorize_by_location(self, df, record_type):\n        aggregated_data = {}\n        filtered_df = df[df['type_of_record'] == record_type]\n        for post_type in self.post_types:\n            post_df = filtered_df[filtered_df['type_of_post'] == post_type]\n            location_counts = post_df['user_location'].value_counts()\n            total_count = location_counts.sum()\n            post_type_data = {}\n            for location, count in location_counts.head(self.TOP_N_COUNTRIES).items():\n                post_type_data[location] = self.calculate_percentage(count, total_count)\n            others_count = location_counts.tail(len(location_counts) - self.TOP_N_COUNTRIES).sum()\n            if others_count > 0:\n                post_type_data[\"Others\"] = self.calculate_percentage(others_count, total_count)\n            aggregated_data[post_type.lower()] = post_type_data\n        return aggregated_data\n\n    def categorize_by_type(self, df, record_type):\n        result = {post_type.lower(): 0 for post_type in self.post_types}\n        filtered_df = df[df['type_of_record'] == record_type]\n        for post_type in self.post_types:\n            post_df = filtered_df[filtered_df['type_of_post'] == post_type]\n            result[post_type.lower()] = len(post_df)\n        return result\n\n    def main(self, df, category_type):\n        output = {}\n        if category_type == 'age':\n            for key, record_type in self.record_mapping.items():\n                output[key] = self.categorize_by_age(df, record_type)\n        elif category_type == 'day_time':\n            for key, record_type in self.record_mapping.items():\n                output[key] = self.categorize_by_day_time(df, record_type)\n        elif category_type == 'location':\n            for key, record_type in self.record_mapping.items():\n                output[key] = self.categorize_by_location(df, record_type)\n        elif category_type == 'type':\n            for key, record_type in self.record_mapping.items():\n                output[key] = self.categorize_by_type(df, record_type)\n        else:\n            return {\"error\": \"Invalid category type\"}\n\n        return output\n\n    def process_file(self, file_path: str) -> pd.DataFrame:\n        if not os.path.exists(file_path):\n            raise FileNotFoundError(f\"The file at path '{file_path}' does not exist.\")\n        return pd.read_csv(file_path)\n\n    def custom_function(self, input_value: str, file_path: str) -> str:\n        df = self.process_file(file_path)\n\n        if \"user_age\" in df.columns:\n            df['age_range'] = df['user_age'].apply(self.categorize_age)\n        else:\n            raise ValueError(\"CSV file must contain a 'user_age' column.\")\n\n        result = self.main(df, input_value)\n        return json.dumps(result, indent=2)\n\n    def build_output(self) -> Message:\n        if not self.path:\n            raise ValueError(\"File path is missing. Please provide a valid file path.\")\n\n        result = self.custom_function(self.input_value, self.path)\n        self.status = \"Processed Successfully\"\n        return Message(text=result)",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "input_value": {
+                "tool_mode": true,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "input_value",
+                "value": "",
+                "display_name": "Category Type",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Select a category type: 'age', 'day_time', 'location', or 'type'.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              }
+            },
+            "description": "Processes a CSV file and returns categorized data based on input value.",
+            "icon": "code",
+            "base_classes": [
+              "Message"
+            ],
+            "display_name": "Custom Component",
+            "documentation": "http://docs.langflow.org/components/custom",
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "output",
+                "display_name": "Output",
+                "method": "build_output",
+                "value": "__UNDEFINED__",
+                "cache": true
+              }
+            ],
+            "field_order": [
+              "input_value",
+              "path"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": true,
+            "metadata": {},
+            "tool_mode": false,
+            "lf_version": "1.1.1"
+          },
+          "type": "CustomComponent",
+          "id": "CustomComponent-AiZSo"
+        },
+        "selected": true,
+        "width": 320,
+        "height": 338,
+        "positionAbsolute": {
+          "x": 709.9614019661504,
+          "y": 125.6668337947217
+        },
+        "dragging": false
+      },
+      {
+        "id": "ChatOutput-brp1O",
+        "type": "genericNode",
+        "position": {
+          "x": 1117.7765789946586,
+          "y": 143.9552558780827
+        },
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "background_color": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "background_color",
+                "value": "",
+                "display_name": "Background Color",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "The background color of the icon.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              },
+              "chat_icon": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "chat_icon",
+                "value": "",
+                "display_name": "Icon",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "The icon of the message.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from langflow.base.io.chat import ChatComponent\nfrom langflow.inputs import BoolInput\nfrom langflow.io import DropdownInput, MessageInput, MessageTextInput, Output\nfrom langflow.schema.message import Message\nfrom langflow.schema.properties import Source\nfrom langflow.utils.constants import MESSAGE_SENDER_AI, MESSAGE_SENDER_NAME_AI, MESSAGE_SENDER_USER\n\n\nclass ChatOutput(ChatComponent):\n    display_name = \"Chat Output\"\n    description = \"Display a chat message in the Playground.\"\n    icon = \"MessagesSquare\"\n    name = \"ChatOutput\"\n\n    inputs = [\n        MessageInput(\n            name=\"input_value\",\n            display_name=\"Text\",\n            info=\"Message to be passed as output.\",\n        ),\n        BoolInput(\n            name=\"should_store_message\",\n            display_name=\"Store Messages\",\n            info=\"Store the message in the history.\",\n            value=True,\n            advanced=True,\n        ),\n        DropdownInput(\n            name=\"sender\",\n            display_name=\"Sender Type\",\n            options=[MESSAGE_SENDER_AI, MESSAGE_SENDER_USER],\n            value=MESSAGE_SENDER_AI,\n            advanced=True,\n            info=\"Type of sender.\",\n        ),\n        MessageTextInput(\n            name=\"sender_name\",\n            display_name=\"Sender Name\",\n            info=\"Name of the sender.\",\n            value=MESSAGE_SENDER_NAME_AI,\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"session_id\",\n            display_name=\"Session ID\",\n            info=\"The session ID of the chat. If empty, the current session ID parameter will be used.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"data_template\",\n            display_name=\"Data Template\",\n            value=\"{text}\",\n            advanced=True,\n            info=\"Template to convert Data to Text. If left empty, it will be dynamically set to the Data's text key.\",\n        ),\n        MessageTextInput(\n            name=\"background_color\",\n            display_name=\"Background Color\",\n            info=\"The background color of the icon.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"chat_icon\",\n            display_name=\"Icon\",\n            info=\"The icon of the message.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"text_color\",\n            display_name=\"Text Color\",\n            info=\"The text color of the name\",\n            advanced=True,\n        ),\n    ]\n    outputs = [\n        Output(\n            display_name=\"Message\",\n            name=\"message\",\n            method=\"message_response\",\n        ),\n    ]\n\n    def _build_source(self, _id: str | None, display_name: str | None, source: str | None) -> Source:\n        source_dict = {}\n        if _id:\n            source_dict[\"id\"] = _id\n        if display_name:\n            source_dict[\"display_name\"] = display_name\n        if source:\n            source_dict[\"source\"] = source\n        return Source(**source_dict)\n\n    def message_response(self) -> Message:\n        _source, _icon, _display_name, _source_id = self.get_properties_from_source_component()\n        _background_color = self.background_color\n        _text_color = self.text_color\n        if self.chat_icon:\n            _icon = self.chat_icon\n        message = self.input_value if isinstance(self.input_value, Message) else Message(text=self.input_value)\n        message.sender = self.sender\n        message.sender_name = self.sender_name\n        message.session_id = self.session_id\n        message.flow_id = self.graph.flow_id if hasattr(self, \"graph\") else None\n        message.properties.source = self._build_source(_source_id, _display_name, _source)\n        message.properties.icon = _icon\n        message.properties.background_color = _background_color\n        message.properties.text_color = _text_color\n        if self.session_id and isinstance(message, Message) and self.should_store_message:\n            stored_message = self.send_message(\n                message,\n            )\n            self.message.value = stored_message\n            message = stored_message\n\n        self.status = message\n        return message\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "data_template": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "data_template",
+                "value": "{text}",
+                "display_name": "Data Template",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Template to convert Data to Text. If left empty, it will be dynamically set to the Data's text key.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              },
+              "input_value": {
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "input_value",
+                "value": "",
+                "display_name": "Text",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Message to be passed as output.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageInput"
+              },
+              "sender": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "options": [
+                  "Machine",
+                  "User"
+                ],
+                "combobox": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "sender",
+                "value": "Machine",
+                "display_name": "Sender Type",
+                "advanced": true,
+                "dynamic": false,
+                "info": "Type of sender.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "DropdownInput"
+              },
+              "sender_name": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "sender_name",
+                "value": "AI",
+                "display_name": "Sender Name",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              },
+              "session_id": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "session_id",
+                "value": "",
+                "display_name": "Session ID",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              },
+              "should_store_message": {
+                "trace_as_metadata": true,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "should_store_message",
+                "value": true,
+                "display_name": "Store Messages",
+                "advanced": true,
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "title_case": false,
+                "type": "bool",
+                "_input_type": "BoolInput"
+              },
+              "text_color": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "text_color",
+                "value": "",
+                "display_name": "Text Color",
+                "advanced": true,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "The text color of the name",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              }
+            },
+            "description": "Display a chat message in the Playground.",
+            "icon": "MessagesSquare",
+            "base_classes": [
+              "Message"
+            ],
+            "display_name": "Chat Output",
+            "documentation": "",
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "message",
+                "display_name": "Message",
+                "method": "message_response",
+                "value": "__UNDEFINED__",
+                "cache": true
+              }
+            ],
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "data_template",
+              "background_color",
+              "chat_icon",
+              "text_color"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {},
+            "tool_mode": false,
+            "category": "outputs",
+            "key": "ChatOutput",
+            "score": 0.003169567463043492,
+            "lf_version": "1.1.1"
+          },
+          "type": "ChatOutput",
+          "id": "ChatOutput-brp1O"
+        },
+        "selected": false,
+        "width": 320,
+        "height": 233,
+        "positionAbsolute": {
+          "x": 1117.7765789946586,
+          "y": 143.9552558780827
+        },
+        "dragging": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "TextInput-GFwm5",
+        "sourceHandle": "{œdataTypeœ:œTextInputœ,œidœ:œTextInput-GFwm5œ,œnameœ:œtextœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "CustomComponent-AiZSo",
+        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œCustomComponent-AiZSoœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "data": {
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "CustomComponent-AiZSo",
+            "inputTypes": [
+              "Message"
+            ],
+            "type": "str"
+          },
+          "sourceHandle": {
+            "dataType": "TextInput",
+            "id": "TextInput-GFwm5",
+            "name": "text",
+            "output_types": [
+              "Message"
+            ]
+          }
+        },
+        "id": "reactflow__edge-TextInput-GFwm5{œdataTypeœ:œTextInputœ,œidœ:œTextInput-GFwm5œ,œnameœ:œtextœ,œoutput_typesœ:[œMessageœ]}-CustomComponent-AiZSo{œfieldNameœ:œinput_valueœ,œidœ:œCustomComponent-AiZSoœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "className": "",
+        "animated": false
+      },
+      {
+        "source": "CustomComponent-AiZSo",
+        "sourceHandle": "{œdataTypeœ:œCustomComponentœ,œidœ:œCustomComponent-AiZSoœ,œnameœ:œoutputœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "ChatOutput-brp1O",
+        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-brp1Oœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "data": {
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "ChatOutput-brp1O",
+            "inputTypes": [
+              "Message"
+            ],
+            "type": "str"
+          },
+          "sourceHandle": {
+            "dataType": "CustomComponent",
+            "id": "CustomComponent-AiZSo",
+            "name": "output",
+            "output_types": [
+              "Message"
+            ]
+          }
+        },
+        "id": "reactflow__edge-CustomComponent-AiZSo{œdataTypeœ:œCustomComponentœ,œidœ:œCustomComponent-AiZSoœ,œnameœ:œoutputœ,œoutput_typesœ:[œMessageœ]}-ChatOutput-brp1O{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-brp1Oœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "animated": false,
+        "className": ""
+      }
+    ],
+    "viewport": {
+      "x": -180.87413435830388,
+      "y": 75.1783477300263,
+      "zoom": 0.9596645580582382
+    }
+  },
+  "description": "",
+  "name": "Dashboard Custom Agent flow",
+  "last_tested_version": "1.1.1",
+  "endpoint_name": null,
+  "is_component": false
+}
