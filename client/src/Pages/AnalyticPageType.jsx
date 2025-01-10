@@ -1,237 +1,132 @@
-import React, { useState } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, scales } from 'chart.js';
+import React, { useState, useEffect } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import ChartSwitcherBar from '../Components/ChartSwitcherBar';
-import sampleData from '../utils/SampleData.json';
 import Chatbot from '../Components/Chatbot';
+import Spinner from '../Components/Spinner';
 
-// Register the necessary components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyticPageType() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ param: 'type' }),
+        });
 
-  const toggleMinimize = () => {
-    setIsSidebarMinimized(!isSidebarMinimized);
-  };
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
 
-  const labels = ['Carousal', 'Image', 'Video', 'Reel'];
+        const result = await response.json();
+        if (!result || Object.keys(result).length === 0) {
+          throw new Error('No data available for type analytics');
+        }
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const postsData = {
-    labels,
-    datasets: [
-      {
-        label: '',
-        data: [
-          sampleData.type.posts.carousal,
-          sampleData.type.posts.image,
-          sampleData.type.posts.video,
-          sampleData.type.posts.reel,
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+    fetchData();
+  }, []);
 
-  const impressionsData = {
-    labels,
-    datasets: [
-      {
-        label: '',
-        data: [
-          sampleData.type.impressions.carousal,
-          sampleData.type.impressions.image,
-          sampleData.type.impressions.video,
-          sampleData.type.impressions.reel,
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+  const toggleMinimize = () => setIsSidebarMinimized(!isSidebarMinimized);
 
-  const likesData = {
-    labels,
-    datasets: [
-      {
-        label: '',
-        data: [
-          sampleData.type.likes.carousal,
-          sampleData.type.likes.image,
-          sampleData.type.likes.video,
-          sampleData.type.likes.reel,
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+  const labels = ['Carousal', 'Image', 'Video', 'Reel/Shorts'];
 
-  const sharesData = {
-    labels,
-    datasets: [
-      {
-        label: '',
-        data: [
-          sampleData.type.shares.carousal,
-          sampleData.type.shares.image,
-          sampleData.type.shares.video,
-          sampleData.type.shares.reel,
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const commentsData = {
-    labels,
-    datasets: [
-      {
-        label: '',
-        data: [
-          sampleData.type.comments.carousal,
-          sampleData.type.comments.image,
-          sampleData.type.comments.video,
-          sampleData.type.comments.reel,
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
+  const createChartData = (category) => {
+    if (!data || !data[category]) {
+      return null;
+    }
+    const categoryData = data[category];
+    return {
+      labels,
+      datasets: [
+        {
+          data: [
+            categoryData.carousal || 0,
+            categoryData.image || 0,
+            categoryData.video || 0,
+            categoryData.reel || 0,
+          ],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
   };
 
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Analytics by Type',
-      },
+      legend: { position: 'top' },
+      title: { display: true, text: 'Analytics by Type' },
     },
     scales: {
       x: {
         title: {
           display: true,
           text: 'Type of Post',
-          font: {
-            size: 16,
-            weight: 'bold',
-            family: 'Arial',
-          },
-          padding: {
-            top: 20,
-         },
+          font: { size: 16, weight: 'bold', family: 'Arial' },
+          padding: { top: 20 },
         },
-        ticks: {
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Arial',
-          },
-        },
+        ticks: { font: { size: 14, weight: 'bold', family: 'Arial' } },
       },
       y: {
         title: {
           display: true,
           text: 'Frequency',
-          font: {
-            size: 16,
-            weight: 'bold',
-            family: 'Arial',
-          },
-          padding: {
-            bottom: 20,
-         },
+          font: { size: 16, weight: 'bold', family: 'Arial' },
+          padding: { bottom: 20 },
         },
-        ticks: {
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Arial',
-          },
-        },
+        ticks: { font: { size: 14, weight: 'bold', family: 'Arial' } },
       },
     },
   };
 
   return (
-    <div className='h-screen flex'>
+    <div className="h-screen flex">
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
-        <h2 className='text-2xl font-bold text-gray-800 mb-6'>Type Analytics</h2>
-        <ChartSwitcherBar
-          postsData={postsData}
-          impressionsData={impressionsData}
-          likesData={likesData}
-          sharesData={sharesData}
-          commentsData={commentsData}
-          options={options}
-        />
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Type Analytics</h2>
+        {loading ? (
+          <Spinner />
+        ) : error ? (
+          <div className="text-red-500 font-bold">Error: {error}</div>
+        ) : (
+          <ChartSwitcherBar
+            postsData={createChartData('posts') || { labels, datasets: [] }}
+            impressionsData={createChartData('impressions') || { labels, datasets: [] }}
+            likesData={createChartData('likes') || { labels, datasets: [] }}
+            sharesData={createChartData('shares') || { labels, datasets: [] }}
+            commentsData={createChartData('comments') || { labels, datasets: [] }}
+            options={options}
+          />
+        )}
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
     </div>

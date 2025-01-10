@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-// import ChartDataLabels from 'chartjs-plugin-datalabels';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
-import sampleData from '../utils/SampleData.json';
 import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
 import Chatbot from '../Components/Chatbot';
 
-// Register the necessary components with Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function AnalyticPageLocation() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [data, setData] = useState(null); // State to store fetched data
 
-  // useEffect(() => {
-  //   // Register the datalabels plugin only for this component
-  //   ChartJS.register(ChartDataLabels);
-
-  //   return () => {
-  //     // Unregister the datalabels plugin when the component unmounts
-  //     ChartJS.unregister(ChartDataLabels);
-  //   };
-  // }, []);
+  useEffect(() => {
+    fetch('/api/data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ param: 'location' }),
+    })
+      .then((response) => response.json())
+      .then((fetchedData) => setData(fetchedData))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -31,203 +32,83 @@ function AnalyticPageLocation() {
     setIsSidebarMinimized(!isSidebarMinimized);
   };
 
-  const labels = Object.keys(sampleData.location.posts.carousal);
-
-  // Generate a unique light color for each country
   const generateColors = (numColors) => {
     const colors = [];
     for (let i = 0; i < numColors; i++) {
-      const color = `hsl(${(i * 360) / numColors}, 70%, 80%)`; // Light color with 80% lightness
+      const color = `hsl(${(i * 360) / numColors}, 70%, 80%)`;
       colors.push(color);
     }
     return colors;
   };
 
+  if (!data) {
+    return <div>Loading...</div>; // Display a loading message until data is fetched
+  }
+
+  const labels = Object.keys(data.posts.carousal);
   const colors = generateColors(labels.length);
+
+  const createDataset = (dataType) => [
+    {
+      label: 'Carousal',
+      data: Object.values(data[dataType].carousal),
+      backgroundColor: colors,
+      borderColor: colors.map((color) => color.replace('80%', '60%')),
+      borderWidth: 1,
+    },
+    {
+      label: 'Image',
+      data: Object.values(data[dataType].image),
+      backgroundColor: colors,
+      borderColor: colors.map((color) => color.replace('80%', '60%')),
+      borderWidth: 1,
+    },
+    {
+      label: 'Video',
+      data: Object.values(data[dataType].video),
+      backgroundColor: colors,
+      borderColor: colors.map((color) => color.replace('80%', '60%')),
+      borderWidth: 1,
+    },
+    {
+      label: 'Reel',
+      data: Object.values(data[dataType].reel),
+      backgroundColor: colors,
+      borderColor: colors.map((color) => color.replace('80%', '60%')),
+      borderWidth: 1,
+    },
+  ];
 
   const postsData = {
     labels,
-    datasets: [
-      {
-        label: 'Carousal',
-        data: Object.values(sampleData.location.posts.carousal),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Image',
-        data: Object.values(sampleData.location.posts.image),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Video',
-        data: Object.values(sampleData.location.posts.video),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Reel',
-        data: Object.values(sampleData.location.posts.reel),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-    ],
+    datasets: createDataset('posts'),
   };
-
   const impressionsData = {
     labels,
-    datasets: [
-      {
-        label: 'Carousal',
-        data: Object.values(sampleData.location.impressions.carousal),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Image',
-        data: Object.values(sampleData.location.impressions.image),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Video',
-        data: Object.values(sampleData.location.impressions.video),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Reel',
-        data: Object.values(sampleData.location.impressions.reel),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-    ],
+    datasets: createDataset('impressions'),
   };
-
   const likesData = {
     labels,
-    datasets: [
-      {
-        label: 'Carousal',
-        data: Object.values(sampleData.location.likes.carousal),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Image',
-        data: Object.values(sampleData.location.likes.image),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Video',
-        data: Object.values(sampleData.location.likes.video),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Reel',
-        data: Object.values(sampleData.location.likes.reel),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-    ],
+    datasets: createDataset('likes'),
   };
-
   const sharesData = {
     labels,
-    datasets: [
-      {
-        label: 'Carousal',
-        data: Object.values(sampleData.location.shares.carousal),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Image',
-        data: Object.values(sampleData.location.shares.image),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Video',
-        data: Object.values(sampleData.location.shares.video),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Reel',
-        data: Object.values(sampleData.location.shares.reel),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-    ],
+    datasets: createDataset('shares'),
   };
-
   const commentsData = {
     labels,
-    datasets: [
-      {
-        label: 'Carousal',
-        data: Object.values(sampleData.location.comments.carousal),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Image',
-        data: Object.values(sampleData.location.comments.image),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Video',
-        data: Object.values(sampleData.location.comments.video),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-      {
-        label: 'Reel',
-        data: Object.values(sampleData.location.comments.reel),
-        backgroundColor: colors,
-        borderColor: colors.map(color => color.replace('80%', '60%')), 
-        borderWidth: 1,
-      },
-    ],
+    datasets: createDataset('comments'),
   };
 
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top',
-      },
+      legend: { position: 'top' },
       tooltip: {
         enabled: true,
         callbacks: {
-          title: function (tooltipItems) {
-            return tooltipItems[0].dataset.label;
-          },
-          label: function (tooltipItem) {
+          title: (tooltipItems) => tooltipItems[0].dataset.label,
+          label: (tooltipItem) => {
             const data = tooltipItem.dataset.data;
             const total = data.reduce((acc, value) => acc + value, 0);
             const currentValue = data[tooltipItem.dataIndex];
@@ -243,10 +124,7 @@ function AnalyticPageLocation() {
           return `${percentage}%`;
         },
         color: '#000000',
-        font: {
-          weight: 'bold',
-          size: 10
-        },
+        font: { weight: 'bold', size: 10 },
       },
     },
     maintainAspectRatio: false,

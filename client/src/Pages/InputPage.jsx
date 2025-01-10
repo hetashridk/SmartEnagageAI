@@ -12,114 +12,91 @@ function InputPage() {
   const [timeSlot, setTimeSlot] = useState('');
   const [contentType, setContentType] = useState('Carousal');
   const [location, setLocation] = useState({ country: '', city: '' });
+  const [loadingChatbot, setLoadingChatbot] = useState(false);
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [loadingg, setLoadingg] = useState(false);
-  const [loadingChatbot, setLoadingChatbot] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [showDetails, setShowDetails] = useState({ insights: false, comparativeInsights: false, suggestions: false });
 
-  const toggleMinimize = () => {
-    setIsSidebarMinimized(!isSidebarMinimized);
-  };
+  const toggleSection = (section) => setShowDetails(prev => ({ ...prev, [section]: !prev[section] }));
+
+  const toggleMinimize = () => setIsSidebarMinimized(!isSidebarMinimized);
 
   useEffect(() => {
     const currentHour = new Date().getHours();
-    if (currentHour >= 0 && currentHour < 6) {
-      setTimeSlot('12AM to 6AM (Night)');
-    } else if (currentHour >= 6 && currentHour < 12) {
-      setTimeSlot('6AM to 12PM (Morning)');
-    } else if (currentHour >= 12 && currentHour < 18) {
-      setTimeSlot('12PM to 6PM (Afternoon)');
-    } else {
-      setTimeSlot('6PM to 12AM (Evening)');
-    }
+    setTimeSlot(
+      currentHour < 6 ? '12AM to 6AM (Night)' :
+        currentHour < 12 ? '6AM to 12PM (Morning)' :
+          currentHour < 18 ? '12PM to 6PM (Afternoon)' : '6PM to 12AM (Evening)'
+    );
 
     fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
-        setLocation({ country: data.country_name, city: data.city });
-      });
+      .then(res => res.json())
+      .then(data => setLocation({ country: data.country_name, city: data.city }))
+      .catch(() => setLocation({ country: 'Unknown', city: 'Unknown' }));
   }, []);
 
   const parseMessage = (message) => {
-    // console.log('Parsing message:', message); // Log the message being parsed
-    const sections = message.split('\n\n');
     const parsedSections = {
       insights: [],
       comparativeInsights: [],
-      suggestions: [],
+      suggestions: []
     };
-
-    let currentSection = '';
-
-    sections.forEach((section) => {
-      if (section.startsWith('### **Insights**:')) {
-        currentSection = 'insights';
-        parsedSections[currentSection].push(section.replace('### **Insights**:', '').trim());
-      } else if (section.startsWith('### **Comparative Insights**:')) {
-        currentSection = 'comparativeInsights';
-        parsedSections[currentSection].push(section.replace('### **Comparative Insights**:', '').trim());
-      } else if (section.startsWith('### **Suggestions**:')) {
-        currentSection = 'suggestions';
-        parsedSections[currentSection].push(section.replace('### **Suggestions**:', '').trim());
-      } else if (currentSection) {
-        parsedSections[currentSection].push(section.trim());
+  
+    if (!message) return parsedSections;
+  
+    // Modify the parsing to handle structured markers (e.g., `**Insights**`, `**Comparative Insights**`, `**Suggestions**`)
+    const regexPatterns = {
+      insights: /\*\*Insights\*\*:(.*?)(?=\*\*Comparative Insights\*\*|$)/s,
+      comparativeInsights: /\*\*Comparative Insights\*\*:(.*?)(?=\*\*Suggestions\*\*|$)/s,
+      suggestions: /\*\*Suggestions\*\*:(.*?)(?=$)/s
+    };
+  
+    Object.keys(regexPatterns).forEach(section => {
+      const match = message.match(regexPatterns[section]);
+      if (match && match[1]) {
+        parsedSections[section] = match[1].trim().split('\n').filter(line => line.trim().length > 0);
       }
     });
-
-    // console.log('Parsed Message:', parsedSections); // Properly log the parsed sections
+  
     return parsedSections;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted'); // Log form submission
-    const inputValue = `(5a00983d6eed - Ignore this)
-    Give me detailed analysis based on insights, comparative insights, and suggestions, for post of type ${contentType} that I plan on posting on ${dayType} during the ${timeSlot}`;
-
-    const payload = {
-      input_value: inputValue,
-      output_type: "chat",
-      input_type: "chat",
-      tweaks: {
-        "TextInput-8FzpP": {},
-        "TextInput-h2XMg": {},
-        "Prompt-hdT2X": {},
-      }
-    };
-
-    setLoadingg(true);
-
+  
+    const inputValue = `Give me a detailed analysis with structured insights, comparative insights, and suggestions for a ${contentType} post on a ${dayType} during the ${timeSlot}. Please ensure the response is structured with the following sections:
+    - **Insights**: [Insights]
+    - **Comparative Insights**: [Comparative Insights]
+    - **Suggestions**: [Suggestions]`;
+  
+    setLoading(true);
+  
     try {
       const response = await fetch('/api/run', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input_value: inputValue })
       });
-
       const data = await response.json();
-
       if (response.ok) {
-        // console.log('API Response:', data); // Log the API response
-        setMessage(data.outputs[0].outputs[0].artifacts.message);
-        console.log('Message set:', data.outputs[0].outputs[0].artifacts.message); // Log the message being set
+        // This assumes the response is in the format that includes 'message' directly
+        setMessage(data.outputs?.[0]?.outputs?.[0]?.artifacts?.message || '');
         setErrorMessage('');
       } else {
-        setErrorMessage('Failed to submit data.');
+        setErrorMessage('Failed to fetch data.');
       }
-      setLoadingg(false);
-
-    } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('An error occurred. Please try again later.');
-      setLoadingg(false);
+    } catch {
+      setErrorMessage('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   const parsedMessage = parseMessage(message);
-  // console.log('Parsed Message:', parsedMessage); // Log the parsed message
 
   return (
     <div className='flex'>
@@ -139,8 +116,8 @@ function InputPage() {
         <div className={`mt-10 ml-5 ${isSidebarMinimized ? 'hidden' : 'block'}`}>
           <p className='text-white syne text-[40px]'>Stay on top of Posting</p>
         </div>
-        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block mt-14' } `}>
-          <img src={CalenderImg} alt="calender" />
+        <div className={`relative ${isSidebarMinimized ? 'hidden' : 'block mt-14'}`}>
+          <img src={CalenderImg} alt="calendar" />
         </div>
       </div>
 
@@ -149,28 +126,28 @@ function InputPage() {
         <form onSubmit={handleSubmit}>
           <label className="block nunito text-[#444B59] font-semibold">When do you plan for posting?</label>
           <div className='flex space-x-4 mt-2'>
-            <select value={dayType} onChange={(e) => setDayType(e.target.value)} className="block w-32 p-2 border border-gray-300 rounded-md">
+            <select value={dayType} onChange={e => setDayType(e.target.value)} className="block w-32 p-2 border border-gray-300 rounded-md">
               <option value="weekday">Weekday</option>
               <option value="weekend">Weekend</option>
             </select>
-            <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="block w-[235px] p-2 border border-gray-300 rounded-md">
-              <option value="Night (12AM to 6AM)">Night (12AM to 6AM)</option>
-              <option value="Morning (6AM to 12PM))">Morning (6AM to 12PM)</option>
-              <option value="Afternoon (12PM to 6PM))">Afternoon (12PM to 6PM)</option>
-              <option value="Evening (6PM to 12AM)">Evening (6PM to 12AM)</option>
+            <select value={timeSlot} onChange={e => setTimeSlot(e.target.value)} className="block w-[235px] p-2 border border-gray-300 rounded-md">
+              <option value="12AM to 6AM (Night)">12AM to 6AM (Night)</option>
+              <option value="6AM to 12PM (Morning)">6AM to 12PM (Morning)</option>
+              <option value="12PM to 6PM (Afternoon)">12PM to 6PM (Afternoon)</option>
+              <option value="6PM to 12AM (Evening)">6PM to 12AM (Evening)</option>
             </select>
           </div>
           <div className='mt-4'>
             <label className="block nunito text-[#444B59] font-semibold">Content Type</label>
-            <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="block w-96 p-2 border border-gray-300 rounded-md mt-2">
+            <select value={contentType} onChange={e => setContentType(e.target.value)} className="block w-96 p-2 border border-gray-300 rounded-md mt-2">
               <option value="Carousal">Carousal</option>
               <option value="Image">Image</option>
               <option value="Video">Video</option>
               <option value="Reel">Reel</option>
             </select>
           </div>
-          <button type="submit" className="w-96 py-2 px-4 mt-4 text-white bg-[#212121] hover:bg-[#7144F1] rounded-md" disabled={loadingg}>
-            {loadingg ? (
+          <button type="submit" className="w-96 py-2 px-4 mt-4 text-white bg-[#212121] hover:bg-[#7144F1] rounded-md" disabled={loading}>
+            {loading ? (
               <div className="flex justify-center items-center">
                 <div className="w-5 h-5 border-t-4 border-b-4 border-white rounded-full animate-spin"></div>
               </div>
@@ -180,67 +157,69 @@ function InputPage() {
           </button>
         </form>
 
-        {/* Message with enhanced styling */}
         {message && (
-          <div className="space-y-4 mt-4">
-            {parsedMessage.insights.length > 0 && (
-              <div className="w-[780px] p-6 bg-blue-100 text-blue-700 rounded-lg shadow-lg">
-                <h3 className="font-bold text-xl mb-2">Insights:</h3>
-                <ul className="list-disc pl-5">
+          <div className="space-y-4 mt-4 w-[780px] p-4 border rounded-lg shadow-lg">
+            <div className="bg-blue-100 text-blue-700 rounded-md">
+              <button onClick={() => toggleSection('insights')} className="font-bold text-left w-full">
+                {showDetails.insights ? '▲' : '▼'} Insights
+              </button>
+              {showDetails.insights && (
+                <ul className="pl-5 list-disc">
                   {parsedMessage.insights.map((insight, index) => (
-                    <li key={index} className='mt-2'>
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
-                    </li>
-                  ))
-                  .filter((insight) => {
-                    return insight != '';
-                  })}
-                </ul>
-              </div>
-            )}
-
-            {parsedMessage.comparativeInsights.length > 0 && (
-              <div className="w-[780px] p-6 bg-yellow-100 text-yellow-700 rounded-lg shadow-lg">
-                <h3 className="font-bold text-xl mb-2">Comparative Insights:</h3>
-                <ul className="pl-5">
-                  {parsedMessage.comparativeInsights.map((insight, index) => (
-                    <li key={index} className='mt-2'>
+                    <li key={index} className="mt-2">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              )}
+            </div>
 
-            {parsedMessage.suggestions.length > 0 && (
-              <div className="w-[780px] p-6 bg-green-100 text-green-700 rounded-lg shadow-lg">
-                <h3 className="font-bold text-xl mb-2">Suggestions:</h3>
+            <div className="bg-yellow-100 text-yellow-700 rounded-md">
+              <button onClick={() => toggleSection('comparativeInsights')} className="font-bold text-left w-full">
+                {showDetails.comparativeInsights ? '▲' : '▼'} Comparative Insights
+              </button>
+              {showDetails.comparativeInsights && (
+                <ul className="pl-5">
+                  {parsedMessage.comparativeInsights.map((insight, index) => (
+                    <li key={index} className="mt-2">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="bg-green-100 text-green-700 rounded-md">
+              <button onClick={() => toggleSection('suggestions')} className="font-bold text-left w-full">
+                {showDetails.suggestions ? '▲' : '▼'} Suggestions
+              </button>
+              {showDetails.suggestions && (
                 <ul className="pl-5">
                   {parsedMessage.suggestions.map((suggestion, index) => (
-                    <li key={index} className='mt-2'>
+                    <li key={index} className="mt-2">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{suggestion}</ReactMarkdown>
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
 
-        {/* Error message with enhanced styling */}
         {errorMessage && (
           <div className="w-96 mt-4 p-6 bg-red-100 text-red-700 rounded-lg shadow-lg">
             <h3 className="font-bold text-xl mb-2">Error:</h3>
-            <div className="text-sm">{errorMessage}</div>
+            <p>{errorMessage}</p>
           </div>
         )}
       </div>
+
       <Chatbot
-              setLoading={setLoadingChatbot}
-              setErrorMessage={setErrorMessage}
-              toggleSidebar={toggleMinimize} 
-              loading={loadingChatbot}
-        />
+        setLoading={setLoadingChatbot}
+        setErrorMessage={setErrorMessage}
+        toggleSidebar={toggleMinimize}
+        loading={loadingChatbot}
+      />
     </div>
   );
 }
