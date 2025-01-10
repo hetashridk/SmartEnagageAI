@@ -15,12 +15,6 @@ const PORT = process.env.PORT;
 const DATA_FLOW_ID = process.env.DATA_FLOW_ID;
 const DATA_APPLICATION_TOKEN = process.env.DATA_APPLICATION_TOKEN;
 
-var server= http.createServer(app).listen(port, function()
-{
-    console.log("Express server listening on port " + port)
-})
-server.timeout = 120000;
-
 // Middleware
 app.use(cors());
 app.use(express.json());
