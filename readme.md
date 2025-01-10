@@ -1,4 +1,4 @@
-# 📊 Social Media Engagement Analytics Module
+# 📊 SmartEngage AI
 
 ## 🌟 Overview
 
@@ -32,13 +32,29 @@ This project is a powerful analytics module designed to analyze social media eng
 
 ### Backend Workflow
 
-1. **Data Population**: 
+1. **Data Querying**: 
    - Load mock engagement data into Astra DB via an automated Python script.
-2. **Data Querying**: 
    - Query Astra DB for average engagement metrics based on various filters (e.g., post type, time).
-3. **Insights Generation**: 
+     
+     <div align="center">
+     <img src="https://github.com/user-attachments/assets/124d8b48-095c-4b4a-83f6-2e8c7a838359" alt="Data ingestion" width="55%" style="margin: 5px;">
+     </div>
+
+2. **Insights Generation**: 
    - Process the queried data using Langflow workflows integrated with GPT.
-   - Deliver both textual and graphical insights.
+   - Deliver both bot interactions and analytics insights.
+
+     <div align="center">
+     <img src="https://github.com/user-attachments/assets/1b823b63-5d67-41b9-b30d-8bc5f59b165b" alt="SE_AI_flow" width="55%" style="margin: 5px;">
+     </div>
+     
+3. **Dashboard Visualization**: 
+   - Process the queried data using Langflow's custom component workflow.
+   - Deliver graphical insights based on the various analysis factors.
+
+     <div align="center">
+     <img src="https://github.com/user-attachments/assets/dd2334f8-ca5c-4ee7-8ca0-b41f9dceeed0" alt="Dashboard_component" width="55%" style="margin: 5px;">
+     </div>\
 
 ### Frontend Workflow
 
@@ -64,7 +80,7 @@ This project is a powerful analytics module designed to analyze social media eng
 - Built workflows using Langflow:
   - Accept user input (e.g., post type or time).
   - Query Astra DB to retrieve relevant data.
-  - Process metrics via GPT.
+  - Process metrics via GPT/Mistral Embeddings.
   - Generate actionable insights for both the dashboard and chatbot.
 
 ### 3️⃣ Frontend Development
@@ -78,7 +94,7 @@ This project is a powerful analytics module designed to analyze social media eng
 
 ## 🎥 Demo and Resources
 
-- 🌐 **Web Application**: [Link to the Web App](#) *(API integration pending)*  
+- 🌐 **Web Application**: [Link to the Web App](#)
 - 🎬 **YouTube Walkthrough**: [Watch the Demo](#)  
 - 👨‍💻 **FindCoder Project Link**: [Explore the Project](#)  
 
@@ -86,9 +102,9 @@ This project is a powerful analytics module designed to analyze social media eng
 
 ## 🚀 Future Enhancements
 
-- **API Integration**: Complete backend API integration with the React frontend.  
-- **Chatbot Improvements**: Enhance the chatbot's capabilities for more dynamic and intelligent interactions.  
-- **Expanded Visualizations**: Add support for additional graph types, such as pie charts and heatmaps.  
+- **Data Integration**: Complete real-time data ingestion on dynamic user inputs.  
+- **Chatbot Improvements**: Enhance the chatbot's capabilities for more dynamic and memory driven interactions.  
+- **Expanded Visualizations**: Add support for additional graph types and chatbot for gathering further knowledge about the trends
 
 ---
 
