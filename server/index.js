@@ -18,7 +18,7 @@ const DATA_APPLICATION_TOKEN = process.env.DATA_APPLICATION_TOKEN;
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
-server.timeout = 15000;
+server.timeout = 120000;
 
 // Middleware
 app.use(cors());
