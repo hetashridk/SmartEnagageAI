@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, scales } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import ChartSwitcherBar from '../Components/ChartSwitcherBar';
-import sampleData from '../utils/SampleData.json';
-import Chatbot from '../Components/Chatbot';
+import Spinner from '../Components/Spinner';
 
 // Register the necessary components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -11,7 +10,31 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function AnalyticPageType() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [typeData, setTypeData] = useState(null);
 
+  useEffect(() => {
+    if (typeData) return null;
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ param: 'type' }),
+        });
+
+        const result = await response.json();
+        setTypeData(result);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -28,10 +51,10 @@ function AnalyticPageType() {
       {
         label: '',
         data: [
-          sampleData.type.posts.carousal,
-          sampleData.type.posts.image,
-          sampleData.type.posts.video,
-          sampleData.type.posts.reel,
+          typeData?.posts.carousal,
+          typeData?.posts.image,
+          typeData?.posts.video,
+          typeData?.posts.reel,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -56,10 +79,10 @@ function AnalyticPageType() {
       {
         label: '',
         data: [
-          sampleData.type.impressions.carousal,
-          sampleData.type.impressions.image,
-          sampleData.type.impressions.video,
-          sampleData.type.impressions.reel,
+          typeData?.impressions.carousal,
+          typeData?.impressions.image,
+          typeData?.impressions.video,
+          typeData?.impressions.reel,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -84,10 +107,10 @@ function AnalyticPageType() {
       {
         label: '',
         data: [
-          sampleData.type.likes.carousal,
-          sampleData.type.likes.image,
-          sampleData.type.likes.video,
-          sampleData.type.likes.reel,
+          typeData?.likes.carousal,
+          typeData?.likes.image,
+          typeData?.likes.video,
+          typeData?.likes.reel,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -112,10 +135,10 @@ function AnalyticPageType() {
       {
         label: '',
         data: [
-          sampleData.type.shares.carousal,
-          sampleData.type.shares.image,
-          sampleData.type.shares.video,
-          sampleData.type.shares.reel,
+          typeData?.shares.carousal,
+          typeData?.shares.image,
+          typeData?.shares.video,
+          typeData?.shares.reel,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -140,10 +163,10 @@ function AnalyticPageType() {
       {
         label: '',
         data: [
-          sampleData.type.comments.carousal,
-          sampleData.type.comments.image,
-          sampleData.type.comments.video,
-          sampleData.type.comments.reel,
+          typeData?.comments.carousal,
+          typeData?.comments.image,
+          typeData?.comments.video,
+          typeData?.comments.reel,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -224,16 +247,17 @@ function AnalyticPageType() {
       <AnalyticSidebar isMinimized={isSidebarMinimized} toggleMinimize={toggleMinimize} />
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Type Analytics</h2>
-        <ChartSwitcherBar
+        {loading ? <Spinner /> : (
+          <ChartSwitcherBar
           postsData={postsData}
           impressionsData={impressionsData}
           likesData={likesData}
           sharesData={sharesData}
           commentsData={commentsData}
           options={options}
-        />
+         />
+        )}
       </div>
-      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }

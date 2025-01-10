@@ -25,12 +25,12 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
         "Prompt-hdT2X": {},
       }
     };
-
+    setChatHistory(chatHistory => [...chatHistory, { sender: 'user', message: userInput }]);
     setLoading(true);
-    setChatHistory([...chatHistory, { sender: 'user', message: userInput }]);
     setUserInput('');
 
     try {
+      setChatHistory([...chatHistory, { sender: 'user', message: userInput }]);
       const response = await fetch('/api/run', {
         method: 'POST',
         headers: {
@@ -40,9 +40,8 @@ const Chatbot = ({ toggleSidebar, setLoading, setErrorMessage, loading }) => {
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        setChatHistory([...chatHistory, { sender: 'bot', message: data.outputs[0].outputs[0].artifacts.message }]);
+        setChatHistory(chatHistory => [...chatHistory, { sender: 'bot', message: data.outputs[0].outputs[0].artifacts.message }])
         setErrorMessage('');
       } else {
         setErrorMessage('Failed to submit data.');

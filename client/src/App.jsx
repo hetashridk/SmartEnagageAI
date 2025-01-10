@@ -1,12 +1,20 @@
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import InputPage from "./Pages/InputPage"
 import AnalyticPageAge from "./Pages/AnalyticPageAge"
 import AnalyticPageLocation from "./Pages/AnalyticPageLocation"
 import AnalyticPageDay from "./Pages/AnalyticPageDay"
 import AnalyticPageType from "./Pages/AnalyticPageType"
+import Chatbot from "./Components/Chatbot";
 
 function App() {
-
+  const [loadingChatbot, setLoadingChatbot] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  
+  const toggleMinimize = () => {
+    setIsSidebarMinimized(!isSidebarMinimized);
+  };
   return (
     <>
      <Router>
@@ -18,6 +26,12 @@ function App() {
         <Route path='/analytic/type' element={<AnalyticPageType />} />
       </Routes>
      </Router>
+     <Chatbot
+        setLoading={setLoadingChatbot}
+        setErrorMessage={setErrorMessage}
+        toggleSidebar={toggleMinimize} 
+        loading={loadingChatbot}
+      />
     </>
   )
 }

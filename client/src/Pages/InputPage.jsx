@@ -79,13 +79,6 @@ function InputPage() {
 
     const payload = {
       input_value: inputValue,
-      output_type: "chat",
-      input_type: "chat",
-      tweaks: {
-        "TextInput-8FzpP": {},
-        "TextInput-h2XMg": {},
-        "Prompt-hdT2X": {},
-      }
     };
 
     setLoadingg(true);
@@ -103,8 +96,8 @@ function InputPage() {
 
       if (response.ok) {
         // console.log('API Response:', data); // Log the API response
-        setMessage(data.outputs[0].outputs[0].artifacts.message);
-        console.log('Message set:', data.outputs[0].outputs[0].artifacts.message); // Log the message being set
+        setMessage(data.outputs?.[0]?.outputs?.[0]?.artifacts?.message);
+        console.log('Message set:', data.outputs?.[0]?.outputs?.[0]?.artifacts?.message); // Log the message being set
         setErrorMessage('');
       } else {
         setErrorMessage('Failed to submit data.');
@@ -186,7 +179,7 @@ function InputPage() {
             {parsedMessage.insights.length > 0 && (
               <div className="w-[780px] p-6 bg-blue-100 text-blue-700 rounded-lg shadow-lg">
                 <h3 className="font-bold text-xl mb-2">Insights:</h3>
-                <ul className="list-disc pl-5">
+                <ul className="pl-5">
                   {parsedMessage.insights.map((insight, index) => (
                     <li key={index} className='mt-2'>
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight}</ReactMarkdown>

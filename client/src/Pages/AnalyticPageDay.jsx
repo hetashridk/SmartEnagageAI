@@ -14,8 +14,8 @@ import AnalyticSidebar from "../Components/AnalyticSidebar";
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 import sampleData from "../utils/SampleData.json";
 import ChartSwitcherGroupedBar from "../Components/ChartSwitcherGroupedBar";
-import Chatbot from "../Components/Chatbot";
 import ChartSwitcherLine from "../Components/ChartSwitcherLine";
+import Spinner from '../Components/Spinner';
 
 // Register the necessary components with Chart.js
 ChartJS.register(
@@ -32,16 +32,31 @@ ChartJS.register(
 function AnalyticPageDay() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [dayData, setDayData] = useState(null);
 
-  // useEffect(() => {
-  //   // Register the datalabels plugin only for this component
-  //   ChartJS.register(ChartDataLabels);
+  useEffect(() => {
+    if (dayData) return null;
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ param: 'day_time' }),
+        });
 
-  //   return () => {
-  //     // Unregister the datalabels plugin when the component unmounts
-  //     ChartJS.unregister(ChartDataLabels);
-  //   };
-  // }, []);
+        const result = await response.json();
+        setDayData(result);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -51,11 +66,11 @@ function AnalyticPageDay() {
     setIsSidebarMinimized(!isSidebarMinimized);
   };
 
-  const labelsPosts = Object.keys(sampleData.day_and_time.posts);
-  const labelsImpressions = Object.keys(sampleData.day_and_time.impressions);
-  const labelsLikes = Object.keys(sampleData.day_and_time.likes);
-  const labelsComments = Object.keys(sampleData.day_and_time.comments);
-  const labelsShares = Object.keys(sampleData.day_and_time.shares);
+  const labelsPosts = dayData ? Object.keys(dayData?.posts) : [];
+  const labelsImpressions = dayData ? Object.keys(dayData?.impressions): [];
+  const labelsLikes = dayData ? Object.keys(dayData?.likes): [];
+  const labelsComments = dayData ? Object.keys(dayData?.comments): [];
+  const labelsShares = dayData ? Object.keys(dayData?.shares): [];
 
   const weekdayDataPosts = {
     labels: labelsPosts,
@@ -63,7 +78,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].carousel
+          (label) => dayData.posts[label][0].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -72,7 +87,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].reel
+          (label) => dayData.posts[label][0].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -81,7 +96,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].image
+          (label) => dayData.posts[label][0].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -90,7 +105,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][0].video
+          (label) => dayData.posts[label][0].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -105,7 +120,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].carousel
+          (label) => dayData.posts[label][1].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -114,7 +129,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].reel
+          (label) => dayData.posts[label][1].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -123,7 +138,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].image
+          (label) => dayData.posts[label][1].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -132,7 +147,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsPosts.map(
-          (label) => sampleData.day_and_time.posts[label][1].video
+          (label) => dayData.posts[label][1].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -147,7 +162,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].carousel
+          (label) => dayData.impressions[label][0].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -156,7 +171,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].reel
+          (label) => dayData.impressions[label][0].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -165,7 +180,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].image
+          (label) => dayData.impressions[label][0].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -174,7 +189,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][0].video
+          (label) => dayData.impressions[label][0].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -189,7 +204,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].carousel
+          (label) => dayData.impressions[label][1].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -198,7 +213,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].reel
+          (label) => dayData.impressions[label][1].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -207,7 +222,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].image
+          (label) => dayData.impressions[label][1].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -216,7 +231,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsImpressions.map(
-          (label) => sampleData.day_and_time.impressions[label][1].video
+          (label) => dayData.impressions[label][1].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -231,7 +246,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].carousel
+          (label) => dayData.likes[label][0].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -240,7 +255,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].reel
+          (label) => dayData.likes[label][0].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -249,7 +264,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].image
+          (label) => dayData.likes[label][0].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -258,7 +273,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][0].video
+          (label) => dayData.likes[label][0].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -273,7 +288,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].carousel
+          (label) => dayData.likes[label][1].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -282,7 +297,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].reel
+          (label) => dayData.likes[label][1].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -291,7 +306,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].image
+          (label) => dayData.likes[label][1].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -300,7 +315,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsLikes.map(
-          (label) => sampleData.day_and_time.likes[label][1].video
+          (label) => dayData.likes[label][1].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -315,7 +330,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].carousel
+          (label) => dayData.comments[label][0].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -324,7 +339,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].reel
+          (label) => dayData.comments[label][0].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -333,7 +348,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].image
+          (label) => dayData.comments[label][0].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -342,7 +357,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][0].video
+          (label) => dayData.comments[label][0].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -357,7 +372,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].carousel
+          (label) => dayData.comments[label][1].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -366,7 +381,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].reel
+          (label) => dayData.comments[label][1].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -375,7 +390,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].image
+          (label) => dayData.comments[label][1].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -384,7 +399,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsComments.map(
-          (label) => sampleData.day_and_time.comments[label][1].video
+          (label) => dayData.comments[label][1].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -399,7 +414,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].carousel
+          (label) => dayData.shares[label][0].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -408,7 +423,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].reel
+          (label) => dayData.shares[label][0].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -417,7 +432,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].image
+          (label) => dayData.shares[label][0].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -426,7 +441,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][0].video
+          (label) => dayData.shares[label][0].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -441,7 +456,7 @@ function AnalyticPageDay() {
       {
         label: "Carousel",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].carousel
+          (label) => dayData.shares[label][1].carousel
         ),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -450,7 +465,7 @@ function AnalyticPageDay() {
       {
         label: "Reel",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].reel
+          (label) => dayData.shares[label][1].reel
         ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -459,7 +474,7 @@ function AnalyticPageDay() {
       {
         label: "Image",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].image
+          (label) => dayData.shares[label][1].image
         ),
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
@@ -468,7 +483,7 @@ function AnalyticPageDay() {
       {
         label: "Video",
         data: labelsShares.map(
-          (label) => sampleData.day_and_time.shares[label][1].video
+          (label) => dayData.shares[label][1].video
         ),
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -540,17 +555,20 @@ function AnalyticPageDay() {
         </h2>
         <div className="mb-6">
           <h3 className="text-xl font-bold text-gray-800 mb-4">Weekday</h3>
-          <ChartSwitcherLine
+          {loading ? <Spinner /> : (
+            <ChartSwitcherLine
             postsData={weekdayDataPosts}
             impressionsData={weekdayDataImpressions}
             likesData={weekdayDataLikes}
             commentsData={weekdayDataComments}
             sharesData={weekdayDataShares}
             options={options}
-          />
+           />
+          )} 
         </div>
         <div>
           <h3 className="text-xl font-bold text-gray-800 mb-4">Weekend</h3>
+          {loading ? <Spinner /> : (
           <ChartSwitcherLine
             postsData={weekendDataPosts}
             impressionsData={weekendDataImpressions}
@@ -559,9 +577,9 @@ function AnalyticPageDay() {
             sharesData={weekendDataShares}
             options={options}
           />
+          )}
         </div>
       </div>
-      <Chatbot toggleSidebar={toggleMinimize} />
     </div>
   );
 }
