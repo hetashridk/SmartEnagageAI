@@ -25,13 +25,13 @@ function InputPage() {
   useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour >= 0 && currentHour < 6) {
-      setTimeSlot('12AM to 6AM (Night)');
+      setTimeSlot('Night (12AM to 6AM)');
     } else if (currentHour >= 6 && currentHour < 12) {
-      setTimeSlot('6AM to 12PM (Morning)');
+      setTimeSlot('Morning (6AM to 12PM)');
     } else if (currentHour >= 12 && currentHour < 18) {
-      setTimeSlot('12PM to 6PM (Afternoon)');
+      setTimeSlot('Afternoon (12PM to 6PM)');
     } else {
-      setTimeSlot('6PM to 12AM (Evening)');
+      setTimeSlot('Evening (6PM to 12AM)');
     }
 
     fetch('https://ipapi.co/json/')
@@ -111,8 +111,18 @@ function InputPage() {
     }
   };
 
-  const parsedMessage = parseMessage(message);
-  // console.log('Parsed Message:', parsedMessage); // Log the parsed message
+  const [parsedMessage, setParsedMessage] = useState({
+    insights: [],
+    comparativeInsights: [],
+    suggestions: [],
+  });
+  
+  useEffect(() => {
+    if (message) {
+      const updatedParsedMessage = parseMessage(message);
+      setParsedMessage(updatedParsedMessage);
+    }
+  }, [message]);
 
   return (
     <div className='flex'>
@@ -148,8 +158,8 @@ function InputPage() {
             </select>
             <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="block w-[235px] p-2 border border-gray-300 rounded-md">
               <option value="Night (12AM to 6AM)">Night (12AM to 6AM)</option>
-              <option value="Morning (6AM to 12PM))">Morning (6AM to 12PM)</option>
-              <option value="Afternoon (12PM to 6PM))">Afternoon (12PM to 6PM)</option>
+              <option value="Morning (6AM to 12PM)">Morning (6AM to 12PM)</option>
+              <option value="Afternoon (12PM to 6PM)">Afternoon (12PM to 6PM)</option>
               <option value="Evening (6PM to 12AM)">Evening (6PM to 12AM)</option>
             </select>
           </div>
