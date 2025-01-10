@@ -3,6 +3,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import AnalyticSidebar from '../Components/AnalyticSidebar';
 import ChartSwitcherDonut from '../Components/ChartSwitcherDonut';
 import Chatbot from '../Components/Chatbot';
+import Spinner from '../Components/Spinner';
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -10,6 +12,7 @@ function AnalyticPageLocation() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const [data, setData] = useState(null); // State to store fetched data
+  const [loading, setLoading] = useState(true); // State to track loading status
 
   useEffect(() => {
     fetch('/api/data', {
@@ -20,8 +23,14 @@ function AnalyticPageLocation() {
       body: JSON.stringify({ param: 'location' }),
     })
       .then((response) => response.json())
-      .then((fetchedData) => setData(fetchedData))
-      .catch((error) => console.error('Error fetching data:', error));
+      .then((fetchedData) => {
+        setData(fetchedData);
+        setLoading(false); // Data fetched, stop loading
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Stop loading in case of an error
+      });
   }, []);
 
   const toggleSidebar = () => {
@@ -41,11 +50,7 @@ function AnalyticPageLocation() {
     return colors;
   };
 
-  if (!data) {
-    return <div>Loading...</div>; // Display a loading message until data is fetched
-  }
-
-  const labels = Object.keys(data.posts.carousal);
+  const labels = data ? Object.keys(data.posts.carousal) : [];
   const colors = generateColors(labels.length);
 
   const createDataset = (dataType) => [
@@ -81,23 +86,23 @@ function AnalyticPageLocation() {
 
   const postsData = {
     labels,
-    datasets: createDataset('posts'),
+    datasets: data? createDataset('posts'): [],
   };
   const impressionsData = {
     labels,
-    datasets: createDataset('impressions'),
+    datasets: data?createDataset('impressions'):[]
   };
   const likesData = {
     labels,
-    datasets: createDataset('likes'),
+    datasets: data?createDataset('likes'):[],
   };
   const sharesData = {
     labels,
-    datasets: createDataset('shares'),
+    datasets: data?createDataset('shares'):[],
   };
   const commentsData = {
     labels,
-    datasets: createDataset('comments'),
+    datasets: data?createDataset('comments'):[],
   };
 
   const options = {
@@ -138,14 +143,18 @@ function AnalyticPageLocation() {
       <div className={`w-[65%] ${isSidebarMinimized ? 'mx-8' : 'flex-1 p-6'}`}>
         <h2 className='text-2xl font-bold text-gray-800 mb-6'>Location Analytics</h2>
         <div className='space-y-6'>
-          <ChartSwitcherDonut
-            postsData={postsData}
-            impressionsData={impressionsData}
-            likesData={likesData}
-            sharesData={sharesData}
-            commentsData={commentsData}
-            options={options}
-          />
+          {loading ? (
+            <Spinner/>
+          ) : (
+            <ChartSwitcherDonut
+              postsData={postsData}
+              impressionsData={impressionsData}
+              likesData={likesData}
+              sharesData={sharesData}
+              commentsData={commentsData}
+              options={options}
+            />
+          )}
         </div>
       </div>
       <Chatbot toggleSidebar={toggleMinimize} />
